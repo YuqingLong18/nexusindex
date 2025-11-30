@@ -40,7 +40,7 @@
       background:var(--bg); color:var(--text); display:flex; align-items:center; justify-content:center;
       padding:32px;
     }
-    .wrap{width:min(1100px, 100%);}
+    .wrap{width:min(1200px, 100%);}
     header{display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:24px}
     .brand{display:flex; align-items:center; gap:12px}
     .logo{width:32px; height:32px; display:inline-grid; place-items:center; border-radius:10px; background:linear-gradient(135deg, var(--accent), #6d28d9); color:white; font-weight:700}
@@ -48,7 +48,12 @@
     .muted{color:var(--muted); font-size:14px}
 
     .grid{
-      display:grid; grid-template-columns:repeat(auto-fit, minmax(140px, 1fr)); gap:18px;
+      display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:24px;
+    }
+    @media (min-width: 900px){
+      .grid{
+        grid-template-columns:repeat(4, 1fr);
+      }
     }
     .card{
       background:var(--card); border-radius:16px; padding:12px; box-shadow:var(--shadow);
@@ -101,7 +106,7 @@
 
       <a class="card" href="https://translate.thisnexus.cn" aria-label="Open Translation app">
         <div class="icon" aria-hidden="true">
-          <img src="asset/translation_logo.jpg" alt="">
+          <img src="asset/translation_logo.png" alt="">
         </div>
       </a>
 
