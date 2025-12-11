@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Login • THIS Nexus</title>
+  <style>
+    :root{
+      --bg:#f7f7fb;
+      --card:#ffffff;
+      --text:#111827;
+      --muted:#6b7280;
+      --ring:#7c3aed;
+      --accent:#8b5cf6;
+      --error:#ef4444;
+      --shadow:0 10px 20px rgba(17,24,39,.08);
+    }
+    @media (prefers-color-scheme: dark){
+      :root{
+        --bg:#0b0b10;
+        --card:#111319;
+        --text:#f3f4f6;
+        --muted:#9ca3af;
+        --ring:#a78bfa;
+        --accent:#a78bfa;
+        --shadow:0 10px 20px rgba(0,0,0,.45);
+      }
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      background:var(--bg); color:var(--text); display:flex; align-items:center; justify-content:center;
+      padding:20px;
+    }
+    .login-card{
+      background:var(--card); padding:40px; border-radius:24px; box-shadow:var(--shadow);
+      width:100%; max-width:400px; text-align:center;
+    }
+    h1{margin:0 0 8px; font-size:24px; font-weight:700}
+    p{margin:0 0 32px; color:var(--muted); font-size:14px}
+    
+    .form-group{margin-bottom:20px; text-align:left}
+    label{display:block; margin-bottom:8px; font-size:14px; font-weight:500}
+    input{
+      width:100%; padding:12px; border-radius:12px; border:1px solid var(--muted);
+      background:var(--bg); color:var(--text); font-size:16px; outline:none;
+      transition:border-color .15s, box-shadow .15s;
+    }
+    input:focus{border-color:var(--accent); box-shadow:0 0 0 3px var(--ring)}
+    
+    button{
+      width:100%; padding:14px; border:none; border-radius:12px;
+      background:linear-gradient(135deg, var(--accent), #6d28d9); color:white;
+      font-size:16px; font-weight:600; cursor:pointer; transition:opacity .15s;
+    }
+    button:hover{opacity:0.9}
+    button:disabled{opacity:0.7; cursor:not-allowed}
+
+    .error{
+      color:var(--error); font-size:14px; margin-top:16px; min-height:20px; display:none;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-card">
+    <h1>Login to THIS Nexus</h1>
+    <p>Enter your credentials to access the dashboard</p>
+    
+    <form id="loginForm">
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" required autocomplete="username" autofocus>
+      </div>
+      
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required autocomplete="current-password">
+      </div>
+
+      <button type="submit" id="submitBtn">Sign In</button>
+      <div id="errorMsg" class="error"></div>
+    </form>
+  </div>
+
+  <script>
+    const form = document.getElementById('loginForm');
+    const errorMsg = document.getElementById('errorMsg');
+    const submitBtn = document.getElementById('submitBtn');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      errorMsg.style.display = 'none';
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Signing In...';
+
+      const username = form.username.value;
+      const password = form.password.value;
+
+      try {
+        const response = await fetch('http://localhost:3000/verify', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          // Redirect to index page
+          window.location.href = 'index.html';
+        } else {
+          showError(data.error || 'Invalid credentials');
+        }
+      } catch (err) {
+        console.error(err);
+        showError('Connection error. Is the server running?');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Sign In';
+      }
+    });
+
+    function showError(msg) {
+      errorMsg.textContent = msg;
+      errorMsg.style.display = 'block';
+    }
+  </script>
+</body>
+</html>
