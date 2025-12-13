@@ -3,11 +3,11 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>THIS Nexus • Apps</title>
-  <meta name="description" content="Quick launcher for school tools." />
+  <title>清华人工智能通识及教师课堂工具 • Tsinghua AI Literacy Series and Tools</title>
+  <meta name="description" content="Tsinghua AI Literacy Series - Educational tools and resources." />
   <meta name="robots" content="index,follow" />
-  <meta property="og:title" content="THIS Nexus • Apps" />
-  <meta property="og:description" content="Quick launcher for school tools." />
+  <meta property="og:title" content="清华人工智能通识系列 • Tsinghua AI Literacy Series" />
+  <meta property="og:description" content="Tsinghua AI Literacy Series - Educational tools and resources." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://example.com" />
   <meta name="theme-color" content="#ffffff" />
@@ -21,6 +21,7 @@
       --ring:#7c3aed;         /* violet-600 */
       --accent:#8b5cf6;       /* violet-500 */
       --shadow:0 10px 20px rgba(17,24,39,.08);
+      --section-bg:#fafafa;
     }
     @media (prefers-color-scheme: dark){
       :root{
@@ -31,53 +32,164 @@
         --ring:#a78bfa;
         --accent:#a78bfa;
         --shadow:0 10px 20px rgba(0,0,0,.45);
+        --section-bg:#0f0f15;
       }
     }
     *{box-sizing:border-box}
     html,body{height:100%}
     body{
-      margin:0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
-      background:var(--bg); color:var(--text); display:flex; align-items:center; justify-content:center;
-      padding:32px;
+      margin:0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji", "PingFang SC", "Microsoft YaHei", sans-serif;
+      background:var(--bg); color:var(--text); 
+      padding:32px 24px;
+      min-height:100vh;
     }
-    .wrap{width:min(1200px, 100%);}
-    header{display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:24px}
+    .wrap{width:min(1200px, 100%); margin:0 auto;}
+    
+    header{
+      display:flex; 
+      align-items:center; 
+      justify-content:space-between; 
+      gap:16px; 
+      margin-bottom:40px;
+      flex-wrap:wrap;
+    }
     .brand{display:flex; align-items:center; gap:12px}
-    .logo{width:32px; height:32px; display:inline-grid; place-items:center; border-radius:10px; background:linear-gradient(135deg, var(--accent), #6d28d9); color:white; font-weight:700}
-    .brand h1{font-size:18px; margin:0}
+    .logo{width:40px; height:40px; display:inline-grid; place-items:center; border-radius:12px; background:linear-gradient(135deg, var(--accent), #6d28d9); color:white; font-weight:700; font-size:20px}
+    .brand h1{font-size:24px; margin:0; font-weight:600; line-height:1.2}
     .muted{color:var(--muted); font-size:14px}
+    
+    .lang-toggle{
+      display:flex; 
+      align-items:center; 
+      gap:8px; 
+      padding:8px 12px; 
+      background:var(--card); 
+      border-radius:8px; 
+      border:1px solid rgba(107,114,128,.2);
+      cursor:pointer;
+      transition:all .2s ease;
+      font-size:14px;
+      font-weight:500;
+    }
+    .lang-toggle:hover{
+      border-color:var(--accent);
+      box-shadow:0 2px 8px rgba(139,92,246,.15);
+    }
+    .lang-toggle span{
+      color:var(--muted);
+      transition:color .2s ease;
+    }
+    .lang-toggle span.active{
+      color:var(--accent);
+      font-weight:600;
+    }
+
+    .section{
+      margin-bottom:48px;
+    }
+    .section-header{
+      font-size:20px; 
+      font-weight:600; 
+      margin-bottom:24px; 
+      color:var(--text);
+      padding-bottom:12px;
+      border-bottom:2px solid rgba(139,92,246,.2);
+    }
 
     .grid{
-      display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:24px;
+      display:grid; 
+      grid-template-columns:repeat(auto-fill, minmax(240px, 1fr)); 
+      gap:24px;
     }
-    @media (min-width: 900px){
+    @media (min-width: 768px){
       .grid{
-        grid-template-columns:repeat(4, 1fr);
+        grid-template-columns:repeat(auto-fill, minmax(280px, 1fr));
       }
     }
+    
     .card{
-      background:var(--card); border-radius:16px; padding:12px; box-shadow:var(--shadow);
-      display:flex; align-items:center; justify-content:center; transition:transform .15s ease, box-shadow .15s ease;
-      text-decoration:none; color:inherit; outline:0; aspect-ratio:1;
+      background:var(--card); 
+      border-radius:16px; 
+      padding:24px; 
+      box-shadow:var(--shadow);
+      transition:transform .2s ease, box-shadow .2s ease;
+      text-decoration:none; 
+      color:inherit; 
+      outline:0;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      text-align:center;
+      border:1px solid rgba(107,114,128,.08);
     }
-    .card:hover{transform:translateY(-3px); box-shadow:0 14px 28px rgba(17,24,39,.12)}
-    .card:focus-visible{box-shadow:0 0 0 3px var(--ring), var(--shadow)}
-    .icon{
-      width:100%; height:100%; border-radius:12px; display:grid; place-items:center;
-      background:var(--card); box-shadow:inset 0 0 0 1px rgba(107,114,128,.12);
+    .card:hover{
+      transform:translateY(-4px); 
+      box-shadow:0 16px 32px rgba(17,24,39,.12);
+      border-color:var(--accent);
+    }
+    .card:focus-visible{
+      box-shadow:0 0 0 3px var(--ring), var(--shadow)
+    }
+    
+    .card-icon{
+      width:80px; 
+      height:80px; 
+      border-radius:12px; 
+      display:grid; 
+      place-items:center;
+      background:var(--bg); 
+      box-shadow:inset 0 0 0 1px rgba(107,114,128,.1);
       overflow:hidden;
+      margin-bottom:16px;
+      flex-shrink:0;
     }
-    .icon img{width:100%; height:100%; object-fit:contain}
+    .card-icon img{
+      width:100%; 
+      height:100%; 
+      object-fit:contain;
+      padding:8px;
+    }
+    
+    .card-title{
+      font-size:16px;
+      font-weight:600;
+      margin-bottom:8px;
+      color:var(--text);
+    }
+    
+    .card-description{
+      font-size:14px;
+      color:var(--muted);
+      line-height:1.5;
+      margin:0;
+    }
+
     footer{
-      margin-top:28px; text-align:center; font-size:12px; color:var(--muted);
-      display:flex; flex-direction:column; align-items:center; gap:8px;
+      margin-top:60px; 
+      text-align:center; 
+      font-size:12px; 
+      color:var(--muted);
+      display:flex; 
+      flex-direction:column; 
+      align-items:center; 
+      gap:8px;
+      padding-top:32px;
+      border-top:1px solid rgba(107,114,128,.1);
     }
     .beian{
-      display:inline-flex; align-items:center; gap:6px; color:inherit; text-decoration:none;
+      display:inline-flex; 
+      align-items:center; 
+      gap:6px; 
+      color:inherit; 
+      text-decoration:none;
     }
     .beian img{width:16px; height:16px; object-fit:contain}
     .beian:hover span{text-decoration:underline}
     .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border-width:0}
+    
+    [data-lang="zh"] {display:none;}
+    html[lang="zh"] [data-lang="zh"] {display:block;}
+    html[lang="zh"] [data-lang="en"] {display:none;}
   </style>
 </head>
 <body>
@@ -85,72 +197,186 @@
   <div class="wrap">
     <header>
       <div class="brand">
-        <div class="logo" aria-hidden="true">N</div>
-        <h1>THIS Nexus</h1>
+        <div class="logo" aria-hidden="true">清</div>
+        <h1>
+          <span data-lang="en">Tsinghua AI Literacy Series and Tools</span>
+          <span data-lang="zh">清华人工智能通识及教师课堂工具</span>
+        </h1>
       </div>
-      <div class="muted">Quick launcher</div>
+      <button class="lang-toggle" id="langToggle" aria-label="Toggle language">
+        <span class="active" data-lang="en">English</span>
+        <span>/</span>
+        <span data-lang="zh">中文</span>
+      </button>
     </header>
 
-    <main id="apps" class="grid" aria-label="App links">
-      <a class="card" href="https://flashcard.thisnexus.cn" aria-label="Open Flashcard app">
-        <div class="icon" aria-hidden="true">
-          <img src="asset/flashcard_logo.png" alt="">
-        </div>
-      </a>
+    <main id="apps" aria-label="App links">
+      <!-- Explore for Free Section -->
+      <section class="section">
+        <h2 class="section-header">
+          <span data-lang="en">Explore for Free</span>
+          <span data-lang="zh">免费探索</span>
+        </h2>
+        <div class="grid">
+          <a class="card" href="https://particles.thisnexus.cn" aria-label="Open Particles app">
+            <div class="card-icon" aria-hidden="true">
+              <img src="asset/particles.png" alt="">
+            </div>
+            <div class="card-title">
+              <span data-lang="en">Particle Effects</span>
+              <span data-lang="zh">粒子效果</span>
+            </div>
+            <p class="card-description">
+              <span data-lang="en">Interactive particle effects visualization and exploration tool. Explore the beauty of mathematics, physics, chemistry, and more through hand gesture control.</span>
+              <span data-lang="zh">交互式粒子特效可视化和探索工具。通过手势控制探索数学、物理、化学以及更多的宇宙之美。</span>
+            </p>
+          </a>
 
-      <a class="card" href="https://chinese.thisnexus.cn" aria-label="Open Chinese app">
-        <div class="icon" aria-hidden="true">
-          <img src="asset/chinese_logo.png" alt="">
-        </div>
-      </a>
+          <a class="card" href="https://aigebook.thisnexus.cn" aria-label="Open AIGeBook app">
+            <div class="card-icon" aria-hidden="true">
+              <img src="asset/aigebook.png" alt="">
+            </div>
+            <div class="card-title">
+              <span data-lang="en">Tsinghua AIGE Books</span>
+              <span data-lang="zh">清华人工智能通识课本在线学习资料</span>
+            </div>
+            <p class="card-description">
+              <span data-lang="en">AI-powered interactive e-book platform for enhanced learning experiences.</span>
+              <span data-lang="zh">AI驱动的交互式学习平台，增强清华通识课学习体验。</span>
+            </p>
+          </a>
 
-      <a class="card" href="https://translate.thisnexus.cn" aria-label="Open Translation app">
-        <div class="icon" aria-hidden="true">
-          <img src="asset/translation_logo.png" alt="">
+          <a class="card" href="https://aidaily.thisnexus.cn" aria-label="Open AI Daily app">
+            <div class="card-icon" aria-hidden="true">
+              <img src="asset/aidaily.png" alt="">
+            </div>
+            <div class="card-title">
+              <span data-lang="en">AI Daily</span>
+              <span data-lang="zh">AI日报</span>
+            </div>
+            <p class="card-description">
+              <span data-lang="en">Daily AI news and insights to stay updated with the latest developments.</span>
+              <span data-lang="zh">每日AI新闻和洞察，了解最新发展动态。</span>
+            </p>
+          </a>
         </div>
-      </a>
+      </section>
 
-      <a class="card" href="https://aidaily.thisnexus.cn" aria-label="Open AI Daily app">
-        <div class="icon" aria-hidden="true">
-          <img src="asset/aidaily.png" alt="">
-        </div>
-      </a>
+      <!-- Classroom Tools Section -->
+      <section class="section">
+        <h2 class="section-header">
+          <span data-lang="en">Classroom Tools</span>
+          <span data-lang="zh">课堂工具</span>
+        </h2>
+        <div class="grid">
+          <a class="card" href="https://chinese.thisnexus.cn" aria-label="Open Chinese app">
+            <div class="card-icon" aria-hidden="true">
+              <img src="asset/chinese_logo.png" alt="">
+            </div>
+            <div class="card-title">
+              <span data-lang="en">Chinese Learning</span>
+              <span data-lang="zh">语文课堂</span>
+            </div>
+            <p class="card-description">
+              <span data-lang="en">Comprehensive Chinese literature learning platform with interactive exercises, generative AI, classroom collaboration, and author biographical maps.</span>
+              <span data-lang="zh">专研中文学习平台，提供交互式练习，生成式人工智能，课堂合作，和作者生平地图等特色功能。</span>
+            </p>
+          </a>
 
-      <a class="card" href="https://aigebook.thisnexus.cn" aria-label="Open AIGeBook app">
-        <div class="icon" aria-hidden="true">
-          <img src="asset/aigebook.png" alt="">
-        </div>
-      </a>
+          <a class="card" href="https://imagelab.thisnexus.cn" aria-label="Open Image Lab app">
+            <div class="card-icon" aria-hidden="true">
+              <img src="asset/image_lab.png" alt="">
+            </div>
+            <div class="card-title">
+              <span data-lang="en">Image Lab</span>
+              <span data-lang="zh">图像实验室</span>
+            </div>
+            <p class="card-description">
+              <span data-lang="en">Teacher creates classrooms, students join with classroom codes. Unified, cutting-edge image generation tool, no needs for student registration, teachers can manage classrooms and monitor progress.</span>
+              <span data-lang="zh">教师创建课堂，学生用课堂码即可加入。统一的、最前沿的图像生成工具，学生无需注册，教师还可进行课堂管理，监控课堂进度。</span>
+            </p>
+          </a>
 
-      <a class="card" href="https://imagelab.thisnexus.cn" aria-label="Open Image Lab app">
-        <div class="icon" aria-hidden="true">
-          <img src="asset/image_lab.png" alt="">
-        </div>
-      </a>
+          <a class="card" href="https://videogen.thisnexus.cn" aria-label="Open VideoGen app">
+            <div class="card-icon" aria-hidden="true">
+              <img src="asset/videogen.png" alt="">
+            </div>
+            <div class="card-title">
+              <span data-lang="en">Video Lab</span>
+              <span data-lang="zh">视频实验室</span>
+            </div>
+            <p class="card-description">
+              <span data-lang="en">Teacher creates classrooms, students join with classroom codes. Unified, cutting-edge video generation tool, no needs for student registration, teachers can manage classrooms and monitor progress.</span>
+              <span data-lang="zh">教师创建课堂，学生用课堂码即可加入。统一的、最前沿的视频生成工具，学生无需注册，教师还可进行课堂管理，监控课堂进度。</span>
+            </p>
+          </a>
 
-      <a class="card" href="https://mathgen.thisnexus.cn" aria-label="Open LaTeX Solution app">
-        <div class="icon" aria-hidden="true">
-          <img src="asset/latex_solution.png" alt="">
+          <a class="card" href="https://flashcard.thisnexus.cn" aria-label="Open Flashcard app">
+            <div class="card-icon" aria-hidden="true">
+              <img src="asset/flashcard_logo.png" alt="">
+            </div>
+            <div class="card-title">
+              <span data-lang="en">Flashcard</span>
+              <span data-lang="zh">闪卡</span>
+            </div>
+            <p class="card-description">
+              <span data-lang="en">Digital flashcard system for efficient memorization and review. AI-powered card generation and review system.</span>
+              <span data-lang="zh">数字闪卡系统，用于高效记忆和复习。AI驱动的卡片生成和复习系统。</span>
+            </p>
+          </a>
         </div>
-      </a>
+      </section>
 
-      <a class="card" href="https://mathbank.thisnexus.cn" aria-label="Open Math Bank app">
-        <div class="icon" aria-hidden="true">
-          <img src="asset/math_bank.png" alt="">
-        </div>
-      </a>
+      <!-- Educator Tools Section -->
+      <section class="section">
+        <h2 class="section-header">
+          <span data-lang="en">Educator Tools</span>
+          <span data-lang="zh">教师工具</span>
+        </h2>
+        <div class="grid">
+          <a class="card" href="https://translate.thisnexus.cn" aria-label="Open Translation app">
+            <div class="card-icon" aria-hidden="true">
+              <img src="asset/translation_logo.png" alt="">
+            </div>
+            <div class="card-title">
+              <span data-lang="en">Translation</span>
+              <span data-lang="zh">翻译</span>
+            </div>
+            <p class="card-description">
+              <span data-lang="en">Advanced translation tool for multilingual educational content. One-click translation of word, ppt, excel files, no need to translate one page at a time.</span>
+              <span data-lang="zh">用于多语言教育内容的高级翻译工具。一键翻译word，ppt，excel文件，不用一页一页翻译。</span>
+            </p>
+          </a>
 
-      <a class="card" href="https://particles.thisnexus.cn" aria-label="Open Particles app">
-        <div class="icon" aria-hidden="true">
-          <img src="asset/particles.png" alt="">
-        </div>
-      </a>
+          <a class="card" href="https://mathgen.thisnexus.cn" aria-label="Open LaTeX Solution app">
+            <div class="card-icon" aria-hidden="true">
+              <img src="asset/latex_solution.png" alt="">
+            </div>
+            <div class="card-title">
+              <span data-lang="en">LaTeX Solution</span>
+              <span data-lang="zh">LaTeX 标答</span>
+            </div>
+            <p class="card-description">
+              <span data-lang="en">AI-powered one-click LaTeX solution generator for mathematical problems, no need to manually format.</span>
+              <span data-lang="zh">AI驱动，一键为数学问题生成LaTeX格式的解答，无需再额外排版。</span>
+            </p>
+          </a>
 
-      <a class="card" href="https://videogen.thisnexus.cn" aria-label="Open VideoGen app">
-        <div class="icon" aria-hidden="true">
-          <img src="asset/videogen.png" alt="">
+          <a class="card" href="https://mathbank.thisnexus.cn" aria-label="Open Math Bank app">
+            <div class="card-icon" aria-hidden="true">
+              <img src="asset/math_bank.png" alt="">
+            </div>
+            <div class="card-title">
+              <span data-lang="en">Math Bank</span>
+              <span data-lang="zh">数学题库</span>
+            </div>
+            <p class="card-description">
+              <span data-lang="en">Comprehensive database of AMC problems for differentiated teaching. Generate worksheet on a few clicks. </span>
+              <span data-lang="zh">建设中的分层教学题库，内含AMC历年真题，点击几下即可生成试卷。</span>
+            </p>
+          </a>
         </div>
-      </a>
+      </section>
     </main>
 
     <footer>
@@ -163,8 +389,37 @@
   </div>
 
   <script>
+    // Language toggle functionality
+    const langToggle = document.getElementById('langToggle');
+    const html = document.documentElement;
+    
+    // Initialize language from localStorage or default to English
+    const savedLang = localStorage.getItem('preferredLang') || 'en';
+    html.lang = savedLang;
+    updateLangToggle();
+    
+    langToggle.addEventListener('click', () => {
+      const currentLang = html.lang;
+      const newLang = currentLang === 'en' ? 'zh' : 'en';
+      html.lang = newLang;
+      localStorage.setItem('preferredLang', newLang);
+      updateLangToggle();
+    });
+    
+    function updateLangToggle() {
+      const spans = langToggle.querySelectorAll('span');
+      spans.forEach(span => {
+        if (span.textContent === 'English' || span.textContent === '中文') {
+          span.classList.toggle('active', 
+            (html.lang === 'en' && span.textContent === 'English') ||
+            (html.lang === 'zh' && span.textContent === '中文')
+          );
+        }
+      });
+    }
+    
     // Minimal progressive enhancement: current year
-    document.getElementById('y').textContent = new Date().getFullYear()
+    document.getElementById('y').textContent = new Date().getFullYear();
   </script>
 </body>
 </html>
