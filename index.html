@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="zh">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -204,9 +204,9 @@
         </h1>
       </div>
       <button class="lang-toggle" id="langToggle" aria-label="Toggle language">
-        <span class="active" data-lang="en">English</span>
+        <span data-lang="en">English</span>
         <span>/</span>
-        <span data-lang="zh">中文</span>
+        <span class="active" data-lang="zh">中文</span>
       </button>
     </header>
 
@@ -393,8 +393,8 @@
     const langToggle = document.getElementById('langToggle');
     const html = document.documentElement;
     
-    // Initialize language from localStorage or default to English
-    const savedLang = localStorage.getItem('preferredLang') || 'en';
+    // Initialize language from localStorage or default to Chinese
+    const savedLang = localStorage.getItem('preferredLang') || 'zh';
     html.lang = savedLang;
     updateLangToggle();
     
