@@ -1,0 +1,419 @@
+<!doctype html>
+<html lang="zh">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>登录 • Login</title>
+  <style>
+    :root{
+      --bg:#f7f7fb;
+      --card:#ffffff;
+      --text:#111827;
+      --muted:#6b7280;
+      --ring:#7c3aed;
+      --accent:#8b5cf6;
+      --error:#ef4444;
+      --shadow:0 10px 20px rgba(17,24,39,.08);
+    }
+    @media (prefers-color-scheme: dark){
+      :root{
+        --bg:#0b0b10;
+        --card:#111319;
+        --text:#f3f4f6;
+        --muted:#9ca3af;
+        --ring:#a78bfa;
+        --accent:#a78bfa;
+        --shadow:0 10px 20px rgba(0,0,0,.45);
+      }
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji", "PingFang SC", "Microsoft YaHei", sans-serif;
+      background:var(--bg); color:var(--text); 
+      display:flex; align-items:center; justify-content:center;
+      padding:20px;
+    }
+    .auth-container{
+      background:rgba(255,255,255,.7); 
+      backdrop-filter:blur(20px) saturate(180%);
+      -webkit-backdrop-filter:blur(20px) saturate(180%);
+      padding:48px; 
+      border-radius:24px; 
+      box-shadow:0 8px 32px rgba(17,24,39,.1),
+                  inset 0 1px 0 rgba(255,255,255,.5);
+      width:100%; 
+      max-width:450px; 
+      text-align:center;
+      border:1px solid rgba(255,255,255,.3);
+    }
+    @media (prefers-color-scheme: dark){
+      .auth-container{
+        background:rgba(17,19,25,.6);
+        border:1px solid rgba(255,255,255,.1);
+        box-shadow:0 8px 32px rgba(0,0,0,.3),
+                    inset 0 1px 0 rgba(255,255,255,.05);
+      }
+    }
+    .logo{
+      width:70px; 
+      height:40px; 
+      display:inline-grid; 
+      place-items:center; 
+      border-radius:12px; 
+      background:linear-gradient(135deg, var(--accent), #6d28d9); 
+      color:white; 
+      font-weight:700; 
+      font-size:18px;
+      margin-bottom:24px;
+    }
+    h1{
+      margin:0 0 8px; 
+      font-size:28px; 
+      font-weight:700;
+    }
+    p{
+      margin:0 0 32px; 
+      color:var(--muted); 
+      font-size:14px;
+    }
+    
+    .mode-buttons{
+      display:flex;
+      flex-direction:column;
+      gap:16px;
+      margin-bottom:32px;
+    }
+    .mode-btn{
+      width:100%; 
+      padding:16px 24px; 
+      border:none; 
+      border-radius:12px;
+      background:rgba(255,255,255,.5);
+      backdrop-filter:blur(10px);
+      border:2px solid rgba(139,92,246,.2);
+      color:var(--text);
+      font-size:16px; 
+      font-weight:600; 
+      cursor:pointer; 
+      transition:all .3s ease;
+      text-align:center;
+    }
+    @media (prefers-color-scheme: dark){
+      .mode-btn{
+        background:rgba(17,19,25,.5);
+        border:2px solid rgba(167,139,250,.2);
+      }
+    }
+    .mode-btn:hover{
+      transform:translateY(-2px);
+      border-color:var(--accent);
+      box-shadow:0 8px 16px rgba(139,92,246,.2);
+      background:rgba(255,255,255,.7);
+    }
+    @media (prefers-color-scheme: dark){
+      .mode-btn:hover{
+        background:rgba(17,19,25,.7);
+      }
+    }
+    
+    .form-container{
+      display:none;
+      text-align:left;
+    }
+    .form-container.active{
+      display:block;
+    }
+    
+    .form-group{
+      margin-bottom:20px;
+    }
+    label{
+      display:block; 
+      margin-bottom:8px; 
+      font-size:14px; 
+      font-weight:500;
+    }
+    input{
+      width:100%; 
+      padding:12px; 
+      border-radius:12px; 
+      border:1px solid rgba(107,114,128,.3);
+      background:rgba(255,255,255,.5);
+      backdrop-filter:blur(10px);
+      color:var(--text); 
+      font-size:16px; 
+      outline:none;
+      transition:all .2s ease;
+    }
+    @media (prefers-color-scheme: dark){
+      input{
+        background:rgba(17,19,25,.5);
+        border:1px solid rgba(255,255,255,.2);
+      }
+    }
+    input:focus{
+      border-color:var(--accent); 
+      box-shadow:0 0 0 3px rgba(139,92,246,.1);
+    }
+    
+    .submit-btn{
+      width:100%; 
+      padding:14px; 
+      border:none; 
+      border-radius:12px;
+      background:linear-gradient(135deg, var(--accent), #6d28d9); 
+      color:white;
+      font-size:16px; 
+      font-weight:600; 
+      cursor:pointer; 
+      transition:all .2s ease;
+      margin-top:8px;
+    }
+    .submit-btn:hover{
+      opacity:0.9;
+      transform:translateY(-1px);
+      box-shadow:0 4px 12px rgba(139,92,246,.3);
+    }
+    .submit-btn:disabled{
+      opacity:0.7; 
+      cursor:not-allowed;
+      transform:none;
+    }
+    
+    .back-btn{
+      width:100%; 
+      padding:12px; 
+      border:none; 
+      border-radius:12px;
+      background:transparent;
+      border:1px solid rgba(107,114,128,.3);
+      color:var(--text);
+      font-size:14px; 
+      font-weight:500; 
+      cursor:pointer; 
+      transition:all .2s ease;
+      margin-top:16px;
+    }
+    .back-btn:hover{
+      border-color:var(--accent);
+      background:rgba(139,92,246,.05);
+    }
+
+    .error{
+      color:var(--error); 
+      font-size:14px; 
+      margin-top:12px; 
+      min-height:20px; 
+      display:none;
+      text-align:center;
+    }
+    .error.show{
+      display:block;
+    }
+    
+    [data-lang="zh"] {display:none;}
+    html[lang="zh"] [data-lang="zh"] {display:block;}
+    html[lang="zh"] [data-lang="en"] {display:none;}
+  </style>
+</head>
+<body>
+  <div class="auth-container">
+    <div class="logo" aria-hidden="true">AIGE</div>
+    <h1>
+      <span data-lang="en">Welcome</span>
+      <span data-lang="zh">欢迎</span>
+    </h1>
+    <p>
+      <span data-lang="en">Please choose your access mode</span>
+      <span data-lang="zh">请选择您的访问方式</span>
+    </p>
+    
+    <!-- Mode Selection -->
+    <div class="mode-buttons" id="modeButtons">
+      <button class="mode-btn" id="teacherBtn">
+        <span data-lang="en">Teacher Login</span>
+        <span data-lang="zh">教师登录</span>
+      </button>
+      <button class="mode-btn" id="guestBtn">
+        <span data-lang="en">Guest Mode</span>
+        <span data-lang="zh">游客模式</span>
+      </button>
+    </div>
+    
+    <!-- Teacher Login Form -->
+    <div class="form-container" id="teacherForm">
+      <form id="loginForm">
+        <div class="form-group">
+          <label for="username">
+            <span data-lang="en">Username</span>
+            <span data-lang="zh">用户名</span>
+          </label>
+          <input type="text" id="username" name="username" required autocomplete="username" autofocus>
+        </div>
+        
+        <div class="form-group">
+          <label for="password">
+            <span data-lang="en">Password</span>
+            <span data-lang="zh">密码</span>
+          </label>
+          <input type="password" id="password" name="password" required autocomplete="current-password">
+        </div>
+
+        <button type="submit" class="submit-btn" id="loginSubmitBtn">
+          <span data-lang="en">Sign In</span>
+          <span data-lang="zh">登录</span>
+        </button>
+        <div id="loginError" class="error"></div>
+      </form>
+      <button class="back-btn" id="backFromTeacher">
+        <span data-lang="en">← Back</span>
+        <span data-lang="zh">← 返回</span>
+      </button>
+    </div>
+    
+    <!-- Guest Mode Form -->
+    <div class="form-container" id="guestForm">
+      <form id="guestCodeForm">
+        <div class="form-group">
+          <label for="inviteCode">
+            <span data-lang="en">Invitation Code</span>
+            <span data-lang="zh">邀请码</span>
+          </label>
+          <input type="text" id="inviteCode" name="inviteCode" required autofocus>
+        </div>
+
+        <button type="submit" class="submit-btn" id="guestSubmitBtn">
+          <span data-lang="en">Continue</span>
+          <span data-lang="zh">继续</span>
+        </button>
+        <div id="guestError" class="error"></div>
+      </form>
+      <button class="back-btn" id="backFromGuest">
+        <span data-lang="en">← Back</span>
+        <span data-lang="zh">← 返回</span>
+      </button>
+    </div>
+  </div>
+
+  <script>
+    // Language toggle functionality
+    const html = document.documentElement;
+    const savedLang = localStorage.getItem('preferredLang') || 'zh';
+    html.lang = savedLang;
+    
+    // Mode selection
+    const teacherBtn = document.getElementById('teacherBtn');
+    const guestBtn = document.getElementById('guestBtn');
+    const modeButtons = document.getElementById('modeButtons');
+    const teacherForm = document.getElementById('teacherForm');
+    const guestForm = document.getElementById('guestForm');
+    
+    // Teacher login
+    const loginForm = document.getElementById('loginForm');
+    const loginError = document.getElementById('loginError');
+    const loginSubmitBtn = document.getElementById('loginSubmitBtn');
+    
+    // Guest mode
+    const guestCodeForm = document.getElementById('guestCodeForm');
+    const guestError = document.getElementById('guestError');
+    const guestSubmitBtn = document.getElementById('guestSubmitBtn');
+    
+    // Back buttons
+    const backFromTeacher = document.getElementById('backFromTeacher');
+    const backFromGuest = document.getElementById('backFromGuest');
+    
+    // Show teacher form
+    teacherBtn.addEventListener('click', () => {
+      modeButtons.style.display = 'none';
+      teacherForm.classList.add('active');
+      document.getElementById('username').focus();
+    });
+    
+    // Show guest form
+    guestBtn.addEventListener('click', () => {
+      modeButtons.style.display = 'none';
+      guestForm.classList.add('active');
+      document.getElementById('inviteCode').focus();
+    });
+    
+    // Back to mode selection
+    backFromTeacher.addEventListener('click', () => {
+      teacherForm.classList.remove('active');
+      modeButtons.style.display = 'flex';
+      loginForm.reset();
+      loginError.classList.remove('show');
+    });
+    
+    backFromGuest.addEventListener('click', () => {
+      guestForm.classList.remove('active');
+      modeButtons.style.display = 'flex';
+      guestCodeForm.reset();
+      guestError.classList.remove('show');
+    });
+    
+    // Teacher login form submission
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      loginError.classList.remove('show');
+      loginSubmitBtn.disabled = true;
+      loginSubmitBtn.innerHTML = html.lang === 'zh' ? '登录中...' : 'Signing In...';
+
+      const username = loginForm.username.value;
+      const password = loginForm.password.value;
+
+      try {
+        const response = await fetch('http://localhost:3000/verify', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          // Store authentication
+          sessionStorage.setItem('authenticated', 'true');
+          sessionStorage.setItem('authType', 'teacher');
+          sessionStorage.setItem('username', username);
+          // Redirect to index page
+          window.location.href = 'index.html';
+        } else {
+          showError(loginError, data.error || (html.lang === 'zh' ? '用户名或密码错误' : 'Invalid credentials'));
+        }
+      } catch (err) {
+        console.error(err);
+        showError(loginError, html.lang === 'zh' ? '连接错误，请检查服务器是否运行' : 'Connection error. Is the server running?');
+      } finally {
+        loginSubmitBtn.disabled = false;
+        loginSubmitBtn.innerHTML = html.lang === 'zh' ? '登录' : 'Sign In';
+      }
+    });
+
+    // Guest code form submission
+    guestCodeForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      guestError.classList.remove('show');
+      
+      const code = guestCodeForm.inviteCode.value.trim();
+      
+      // Check if code matches (case insensitive)
+      if (code.toUpperCase() === 'AIGE2025') {
+        // Store authentication
+        sessionStorage.setItem('authenticated', 'true');
+        sessionStorage.setItem('authType', 'guest');
+        // Redirect to index page
+        window.location.href = 'index.html';
+      } else {
+        showError(guestError, html.lang === 'zh' ? '邀请码错误' : 'Invalid invitation code');
+      }
+    });
+
+    function showError(errorElement, msg) {
+      errorElement.textContent = msg;
+      errorElement.classList.add('show');
+    }
+  </script>
+</body>
+</html>
+

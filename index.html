@@ -541,6 +541,15 @@
   </div>
 
   <script>
+    // Authentication check
+    (function() {
+      const authenticated = sessionStorage.getItem('authenticated');
+      if (!authenticated || authenticated !== 'true') {
+        window.location.href = 'auth.html';
+        return;
+      }
+    })();
+    
     // Language toggle functionality
     const langToggle = document.getElementById('langToggle');
     const html = document.documentElement;
