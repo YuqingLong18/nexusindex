@@ -394,19 +394,9 @@
     guestCodeForm.addEventListener('submit', (e) => {
       e.preventDefault();
       guestError.classList.remove('show');
-      
-      const code = guestCodeForm.inviteCode.value.trim();
-      
-      // Check if code matches (case insensitive)
-      if (code.toUpperCase() === 'AIGE2025') {
-        // Store authentication
-        sessionStorage.setItem('authenticated', 'true');
-        sessionStorage.setItem('authType', 'guest');
-        // Redirect to index page
-        window.location.href = 'index.html';
-      } else {
-        showError(guestError, html.lang === 'zh' ? '邀请码错误' : 'Invalid invitation code');
-      }
+
+      // Guest mode temporarily disabled
+      showError(guestError, '游客模式暂时关闭，请等待公测机会');
     });
 
     function showError(errorElement, msg) {
@@ -416,4 +406,3 @@
   </script>
 </body>
 </html>
-
