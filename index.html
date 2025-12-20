@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="zh">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -13,317 +14,420 @@
   <meta name="theme-color" content="#ffffff" />
   <link rel="icon" href="/favicon.ico" />
   <style>
-    :root{
-      --bg:#f7f7fb;           /* light background */
-      --card:#ffffff;         /* card bg */
-      --text:#111827;         /* slate-900 */
-      --muted:#6b7280;        /* slate-500 */
-      --ring:#7c3aed;         /* violet-600 */
-      --accent:#8b5cf6;       /* violet-500 */
-      --shadow:0 10px 20px rgba(17,24,39,.08);
-      --section-bg:#fafafa;
-    }
-    @media (prefers-color-scheme: dark){
-      :root{
-        --bg:#0b0b10;
-        --card:#111319;
-        --text:#f3f4f6;
-        --muted:#9ca3af;
-        --ring:#a78bfa;
-        --accent:#a78bfa;
-        --shadow:0 10px 20px rgba(0,0,0,.45);
-        --section-bg:#0f0f15;
-      }
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji", "PingFang SC", "Microsoft YaHei", sans-serif;
-      background:var(--bg); color:var(--text); 
-      padding:32px 24px;
-      min-height:100vh;
-    }
-    .wrap{width:min(1200px, 100%); margin:0 auto;}
-    
-    header{
-      display:flex; 
-      align-items:center; 
-      justify-content:space-between; 
-      gap:16px; 
-      margin-bottom:40px;
-      flex-wrap:wrap;
-    }
-    .brand{display:flex; align-items:center; gap:12px}
-    .logo{width:70px; height:40px; display:inline-grid; place-items:center; border-radius:12px; background:linear-gradient(135deg, var(--accent), #6d28d9); color:white; font-weight:700; font-size:18px}
-    .brand h1{font-size:24px; margin:0; font-weight:600; line-height:1.2}
-    .muted{color:var(--muted); font-size:14px}
-    
-    .lang-toggle{
-      display:flex; 
-      align-items:center; 
-      gap:8px; 
-      padding:8px 12px; 
-      background:var(--card); 
-      border-radius:8px; 
-      border:1px solid rgba(107,114,128,.2);
-      cursor:pointer;
-      transition:all .2s ease;
-      font-size:14px;
-      font-weight:500;
-    }
-    .lang-toggle:hover{
-      border-color:var(--accent);
-      box-shadow:0 2px 8px rgba(139,92,246,.15);
-    }
-    .lang-toggle span{
-      color:var(--muted);
-      transition:color .2s ease;
-    }
-    .lang-toggle span.active{
-      color:var(--accent);
-      font-weight:600;
+    :root {
+      --bg: #f7f7fb;
+      /* light background */
+      --card: #ffffff;
+      /* card bg */
+      --text: #111827;
+      /* slate-900 */
+      --muted: #6b7280;
+      /* slate-500 */
+      --ring: #7c3aed;
+      /* violet-600 */
+      --accent: #8b5cf6;
+      /* violet-500 */
+      --shadow: 0 10px 20px rgba(17, 24, 39, .08);
+      --section-bg: #fafafa;
     }
 
-    .section{
-      margin-bottom:48px;
-    }
-    .section-header{
-      font-size:20px; 
-      font-weight:600; 
-      margin-bottom:24px; 
-      color:var(--text);
-      padding-bottom:12px;
-      border-bottom:2px solid rgba(139,92,246,.2);
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0b0b10;
+        --card: #111319;
+        --text: #f3f4f6;
+        --muted: #9ca3af;
+        --ring: #a78bfa;
+        --accent: #a78bfa;
+        --shadow: 0 10px 20px rgba(0, 0, 0, .45);
+        --section-bg: #0f0f15;
+      }
     }
 
-    .grid{
-      display:grid; 
-      grid-template-columns:repeat(auto-fill, minmax(240px, 1fr)); 
-      gap:24px;
-    }
-    @media (min-width: 768px){
-      .grid{
-        grid-template-columns:repeat(auto-fill, minmax(280px, 1fr));
-      }
-    }
-    
-    .card{
-      background:rgba(255,255,255,.7); 
-      backdrop-filter:blur(20px) saturate(180%);
-      -webkit-backdrop-filter:blur(20px) saturate(180%);
-      border-radius:16px; 
-      padding:24px; 
-      box-shadow:0 8px 32px rgba(17,24,39,.1),
-                  inset 0 1px 0 rgba(255,255,255,.5);
-      transition:all .4s cubic-bezier(0.4, 0, 0.2, 1);
-      text-decoration:none; 
-      color:inherit; 
-      outline:0;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      text-align:center;
-      border:1px solid rgba(255,255,255,.3);
-      position:relative;
-      overflow:hidden;
-    }
-    .card::before{
-      content:'';
-      position:absolute;
-      top:0;
-      left:0;
-      right:0;
-      height:1px;
-      background:linear-gradient(90deg, transparent, rgba(139,92,246,.3), transparent);
-      opacity:0;
-      transition:opacity .4s ease;
-    }
-    .card::after{
-      content:'';
-      position:absolute;
-      top:-50%;
-      left:-50%;
-      width:200%;
-      height:200%;
-      background:radial-gradient(circle, rgba(139,92,246,.1) 0%, transparent 70%);
-      opacity:0;
-      transition:opacity .4s ease;
-      pointer-events:none;
-    }
-    @media (prefers-color-scheme: dark){
-      .card{
-        background:rgba(17,19,25,.6);
-        border:1px solid rgba(255,255,255,.1);
-        box-shadow:0 8px 32px rgba(0,0,0,.3),
-                    inset 0 1px 0 rgba(255,255,255,.05);
-      }
-    }
-    .card:hover{
-      transform:translateY(-8px) scale(1.02); 
-      box-shadow:0 20px 40px rgba(139,92,246,.2),
-                  0 0 0 1px rgba(139,92,246,.1),
-                  inset 0 1px 0 rgba(255,255,255,.6);
-      border-color:rgba(139,92,246,.3);
-      background:rgba(255,255,255,.85);
-    }
-    .card:hover::before{
-      opacity:1;
-    }
-    .card:hover::after{
-      opacity:1;
-    }
-    @media (prefers-color-scheme: dark){
-      .card:hover{
-        background:rgba(17,19,25,.8);
-        box-shadow:0 20px 40px rgba(139,92,246,.3),
-                    0 0 0 1px rgba(167,139,250,.2),
-                    inset 0 1px 0 rgba(255,255,255,.1);
-        border-color:rgba(167,139,250,.3);
-      }
-    }
-    .card:focus-visible{
-      box-shadow:0 0 0 3px var(--ring), var(--shadow)
-    }
-    
-    .card-badge{
-      position:absolute;
-      top:12px;
-      left:12px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      z-index:10;
-      animation:pulse-badge 2s ease-in-out infinite;
-      transition:all .3s ease;
-    }
-    .card-badge svg{
-      width:24px;
-      height:24px;
-      stroke:#8b5cf6;
-      stroke-width:2;
-      fill:none;
-      stroke-linecap:round;
-      stroke-linejoin:round;
-      filter:drop-shadow(0 2px 4px rgba(139,92,246,.3));
-    }
-    .card:hover .card-badge{
-      transform:scale(1.1) rotate(5deg);
-    }
-    .card:hover .card-badge svg{
-      stroke:#a78bfa;
-      filter:drop-shadow(0 4px 8px rgba(139,92,246,.5));
-    }
-    @keyframes pulse-badge{
-      0%, 100%{
-        transform:scale(1);
-      }
-      50%{
-        transform:scale(1.05);
-      }
-    }
-    
-    .card-icon{
-      width:80px; 
-      height:80px; 
-      border-radius:12px; 
-      display:grid; 
-      place-items:center;
-      background:rgba(255,255,255,.5);
-      backdrop-filter:blur(10px);
-      -webkit-backdrop-filter:blur(10px);
-      box-shadow:inset 0 0 0 1px rgba(107,114,128,.1),
-                  0 4px 12px rgba(17,24,39,.08);
-      overflow:hidden;
-      margin-bottom:16px;
-      flex-shrink:0;
-      transition:all .4s cubic-bezier(0.4, 0, 0.2, 1);
-      position:relative;
-    }
-    @media (prefers-color-scheme: dark){
-      .card-icon{
-        background:rgba(11,11,16,.5);
-        box-shadow:inset 0 0 0 1px rgba(255,255,255,.1),
-                    0 4px 12px rgba(0,0,0,.3);
-      }
-    }
-    .card:hover .card-icon{
-      transform:scale(1.1) rotate(3deg);
-      box-shadow:inset 0 0 0 1px rgba(139,92,246,.2),
-                  0 8px 20px rgba(139,92,246,.2),
-                  0 0 20px rgba(139,92,246,.1);
-      background:rgba(255,255,255,.7);
-    }
-    @media (prefers-color-scheme: dark){
-      .card:hover .card-icon{
-        background:rgba(11,11,16,.7);
-        box-shadow:inset 0 0 0 1px rgba(167,139,250,.2),
-                    0 8px 20px rgba(167,139,250,.2),
-                    0 0 20px rgba(167,139,250,.1);
-      }
-    }
-    .card-icon img{
-      width:100%; 
-      height:100%; 
-      object-fit:contain;
-      padding:8px;
-      transition:transform .4s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    .card:hover .card-icon img{
-      transform:scale(1.05);
-    }
-    
-    .card-title{
-      font-size:16px;
-      font-weight:600;
-      margin-bottom:8px;
-      color:var(--text);
-      transition:color .3s ease, transform .3s ease;
-    }
-    .card:hover .card-title{
-      color:var(--accent);
-      transform:translateY(-2px);
-    }
-    
-    .card-description{
-      font-size:14px;
-      color:var(--muted);
-      line-height:1.5;
-      margin:0;
-      transition:color .3s ease, transform .3s ease;
-    }
-    .card:hover .card-description{
-      color:var(--text);
-      transform:translateY(-1px);
+    * {
+      box-sizing: border-box
     }
 
-    footer{
-      margin-top:60px; 
-      text-align:center; 
-      font-size:12px; 
-      color:var(--muted);
-      display:flex; 
-      flex-direction:column; 
-      align-items:center; 
-      gap:8px;
-      padding-top:32px;
-      border-top:1px solid rgba(107,114,128,.1);
+    html,
+    body {
+      height: 100%
     }
-    .beian{
-      display:inline-flex; 
-      align-items:center; 
-      gap:6px; 
-      color:inherit; 
-      text-decoration:none;
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji", "PingFang SC", "Microsoft YaHei", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      padding: 32px 24px;
+      min-height: 100vh;
     }
-    .beian img{width:16px; height:16px; object-fit:contain}
-    .beian:hover span{text-decoration:underline}
-    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border-width:0}
-    
-    [data-lang="zh"] {display:none;}
-    html[lang="zh"] [data-lang="zh"] {display:block;}
-    html[lang="zh"] [data-lang="en"] {display:none;}
+
+    .wrap {
+      width: min(1200px, 100%);
+      margin: 0 auto;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 40px;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px
+    }
+
+    .logo {
+      width: 70px;
+      height: 40px;
+      display: inline-grid;
+      place-items: center;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--accent), #6d28d9);
+      color: white;
+      font-weight: 700;
+      font-size: 18px
+    }
+
+    .brand h1 {
+      font-size: 24px;
+      margin: 0;
+      font-weight: 600;
+      line-height: 1.2
+    }
+
+    .muted {
+      color: var(--muted);
+      font-size: 14px
+    }
+
+    .lang-toggle {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      background: var(--card);
+      border-radius: 8px;
+      border: 1px solid rgba(107, 114, 128, .2);
+      cursor: pointer;
+      transition: all .2s ease;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .lang-toggle:hover {
+      border-color: var(--accent);
+      box-shadow: 0 2px 8px rgba(139, 92, 246, .15);
+    }
+
+    .lang-toggle span {
+      color: var(--muted);
+      transition: color .2s ease;
+    }
+
+    .lang-toggle span.active {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .section {
+      margin-bottom: 48px;
+    }
+
+    .section-header {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 24px;
+      color: var(--text);
+      padding-bottom: 12px;
+      border-bottom: 2px solid rgba(139, 92, 246, .2);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 24px;
+    }
+
+    @media (min-width: 768px) {
+      .grid {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      }
+    }
+
+    .card {
+      background: rgba(255, 255, 255, .7);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 8px 32px rgba(17, 24, 39, .1),
+        inset 0 1px 0 rgba(255, 255, 255, .5);
+      transition: all .4s cubic-bezier(0.4, 0, 0.2, 1);
+      text-decoration: none;
+      color: inherit;
+      outline: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      border: 1px solid rgba(255, 255, 255, .3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(139, 92, 246, .3), transparent);
+      opacity: 0;
+      transition: opacity .4s ease;
+    }
+
+    .card::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(139, 92, 246, .1) 0%, transparent 70%);
+      opacity: 0;
+      transition: opacity .4s ease;
+      pointer-events: none;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .card {
+        background: rgba(17, 19, 25, .6);
+        border: 1px solid rgba(255, 255, 255, .1);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, .3),
+          inset 0 1px 0 rgba(255, 255, 255, .05);
+      }
+    }
+
+    .card:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 20px 40px rgba(139, 92, 246, .2),
+        0 0 0 1px rgba(139, 92, 246, .1),
+        inset 0 1px 0 rgba(255, 255, 255, .6);
+      border-color: rgba(139, 92, 246, .3);
+      background: rgba(255, 255, 255, .85);
+    }
+
+    .card:hover::before {
+      opacity: 1;
+    }
+
+    .card:hover::after {
+      opacity: 1;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .card:hover {
+        background: rgba(17, 19, 25, .8);
+        box-shadow: 0 20px 40px rgba(139, 92, 246, .3),
+          0 0 0 1px rgba(167, 139, 250, .2),
+          inset 0 1px 0 rgba(255, 255, 255, .1);
+        border-color: rgba(167, 139, 250, .3);
+      }
+    }
+
+    .card:focus-visible {
+      box-shadow: 0 0 0 3px var(--ring), var(--shadow)
+    }
+
+    .card-badge {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+      animation: pulse-badge 2s ease-in-out infinite;
+      transition: all .3s ease;
+    }
+
+    .card-badge svg {
+      width: 24px;
+      height: 24px;
+      stroke: #8b5cf6;
+      stroke-width: 2;
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      filter: drop-shadow(0 2px 4px rgba(139, 92, 246, .3));
+    }
+
+    .card:hover .card-badge {
+      transform: scale(1.1) rotate(5deg);
+    }
+
+    .card:hover .card-badge svg {
+      stroke: #a78bfa;
+      filter: drop-shadow(0 4px 8px rgba(139, 92, 246, .5));
+    }
+
+    @keyframes pulse-badge {
+
+      0%,
+      100% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.05);
+      }
+    }
+
+    .card-icon {
+      width: 80px;
+      height: 80px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      background: rgba(255, 255, 255, .5);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      box-shadow: inset 0 0 0 1px rgba(107, 114, 128, .1),
+        0 4px 12px rgba(17, 24, 39, .08);
+      overflow: hidden;
+      margin-bottom: 16px;
+      flex-shrink: 0;
+      transition: all .4s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .card-icon {
+        background: rgba(11, 11, 16, .5);
+        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .1),
+          0 4px 12px rgba(0, 0, 0, .3);
+      }
+    }
+
+    .card:hover .card-icon {
+      transform: scale(1.1) rotate(3deg);
+      box-shadow: inset 0 0 0 1px rgba(139, 92, 246, .2),
+        0 8px 20px rgba(139, 92, 246, .2),
+        0 0 20px rgba(139, 92, 246, .1);
+      background: rgba(255, 255, 255, .7);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .card:hover .card-icon {
+        background: rgba(11, 11, 16, .7);
+        box-shadow: inset 0 0 0 1px rgba(167, 139, 250, .2),
+          0 8px 20px rgba(167, 139, 250, .2),
+          0 0 20px rgba(167, 139, 250, .1);
+      }
+    }
+
+    .card-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      padding: 8px;
+      transition: transform .4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .card:hover .card-icon img {
+      transform: scale(1.05);
+    }
+
+    .card-title {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: var(--text);
+      transition: color .3s ease, transform .3s ease;
+    }
+
+    .card:hover .card-title {
+      color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    .card-description {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.5;
+      margin: 0;
+      transition: color .3s ease, transform .3s ease;
+    }
+
+    .card:hover .card-description {
+      color: var(--text);
+      transform: translateY(-1px);
+    }
+
+    footer {
+      margin-top: 60px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--muted);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      padding-top: 32px;
+      border-top: 1px solid rgba(107, 114, 128, .1);
+    }
+
+    .beian {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .beian img {
+      width: 16px;
+      height: 16px;
+      object-fit: contain
+    }
+
+    .beian:hover span {
+      text-decoration: underline
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border-width: 0
+    }
+
+    [data-lang="zh"] {
+      display: none;
+    }
+
+    html[lang="zh"] [data-lang="zh"] {
+      display: block;
+    }
+
+    html[lang="zh"] [data-lang="en"] {
+      display: none;
+    }
   </style>
 </head>
+
 <body>
   <a class="sr-only" href="#apps">Skip to app links</a>
   <div class="wrap">
@@ -353,7 +457,8 @@
           <a class="card" href="https://particles.thisnexus.cn" aria-label="Open Particles app">
             <div class="card-badge" aria-label="Recommended" title="Recommended">
               <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path d="M7 22V11M2 13V20C2 21.1046 2.89543 22 4 22H16.4262C17.907 22 19.1662 20.9197 19.3914 19.4562L20.4683 12.4562C20.7479 10.6384 19.3411 9 17.5032 9H14C13.4477 9 13 8.55228 13 8V4.46584C13 3.10399 11.896 2 10.5342 2C10.2093 2 9.91498 2.1913 9.78306 2.48838L7.26394 8.5M7 22H4C2.89543 22 2 21.1046 2 20V13C2 11.8954 2.89543 11 4 11H7M7 22V11"/>
+                <path
+                  d="M7 22V11M2 13V20C2 21.1046 2.89543 22 4 22H16.4262C17.907 22 19.1662 20.9197 19.3914 19.4562L20.4683 12.4562C20.7479 10.6384 19.3411 9 17.5032 9H14C13.4477 9 13 8.55228 13 8V4.46584C13 3.10399 11.896 2 10.5342 2C10.2093 2 9.91498 2.1913 9.78306 2.48838L7.26394 8.5M7 22H4C2.89543 22 2 21.1046 2 20V13C2 11.8954 2.89543 11 4 11H7M7 22V11" />
               </svg>
             </div>
             <div class="card-icon" aria-hidden="true">
@@ -364,7 +469,8 @@
               <span data-lang="zh">粒子效果</span>
             </div>
             <p class="card-description">
-              <span data-lang="en">Interactive particle effects visualization and exploration tool. Explore the beauty of mathematics, physics, chemistry, and more through hand gesture control.</span>
+              <span data-lang="en">Interactive particle effects visualization and exploration tool. Explore the beauty
+                of mathematics, physics, chemistry, and more through hand gesture control.</span>
               <span data-lang="zh">交互式粒子特效可视化和探索工具。通过手势控制探索数学、物理、化学以及更多的宇宙之美。</span>
             </p>
           </a>
@@ -372,7 +478,8 @@
           <a class="card" href="https://aigebook.thisnexus.cn" aria-label="Open AIGeBook app">
             <div class="card-badge" aria-label="Recommended" title="Recommended">
               <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path d="M7 22V11M2 13V20C2 21.1046 2.89543 22 4 22H16.4262C17.907 22 19.1662 20.9197 19.3914 19.4562L20.4683 12.4562C20.7479 10.6384 19.3411 9 17.5032 9H14C13.4477 9 13 8.55228 13 8V4.46584C13 3.10399 11.896 2 10.5342 2C10.2093 2 9.91498 2.1913 9.78306 2.48838L7.26394 8.5M7 22H4C2.89543 22 2 21.1046 2 20V13C2 11.8954 2.89543 11 4 11H7M7 22V11"/>
+                <path
+                  d="M7 22V11M2 13V20C2 21.1046 2.89543 22 4 22H16.4262C17.907 22 19.1662 20.9197 19.3914 19.4562L20.4683 12.4562C20.7479 10.6384 19.3411 9 17.5032 9H14C13.4477 9 13 8.55228 13 8V4.46584C13 3.10399 11.896 2 10.5342 2C10.2093 2 9.91498 2.1913 9.78306 2.48838L7.26394 8.5M7 22H4C2.89543 22 2 21.1046 2 20V13C2 11.8954 2.89543 11 4 11H7M7 22V11" />
               </svg>
             </div>
             <div class="card-icon" aria-hidden="true">
@@ -420,7 +527,8 @@
               <span data-lang="zh">语文课堂</span>
             </div>
             <p class="card-description">
-              <span data-lang="en">Comprehensive Chinese literature learning platform with interactive exercises, generative AI, classroom collaboration, and author biographical maps.</span>
+              <span data-lang="en">Comprehensive Chinese literature learning platform with interactive exercises,
+                generative AI, classroom collaboration, and author biographical maps.</span>
               <span data-lang="zh">专研中文学习平台，提供交互式练习，生成式人工智能，课堂合作，和作者生平地图等特色功能。</span>
             </p>
           </a>
@@ -428,7 +536,8 @@
           <a class="card" href="https://imagelab.thisnexus.cn" aria-label="Open Image Lab app">
             <div class="card-badge" aria-label="Recommended" title="Recommended">
               <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path d="M7 22V11M2 13V20C2 21.1046 2.89543 22 4 22H16.4262C17.907 22 19.1662 20.9197 19.3914 19.4562L20.4683 12.4562C20.7479 10.6384 19.3411 9 17.5032 9H14C13.4477 9 13 8.55228 13 8V4.46584C13 3.10399 11.896 2 10.5342 2C10.2093 2 9.91498 2.1913 9.78306 2.48838L7.26394 8.5M7 22H4C2.89543 22 2 21.1046 2 20V13C2 11.8954 2.89543 11 4 11H7M7 22V11"/>
+                <path
+                  d="M7 22V11M2 13V20C2 21.1046 2.89543 22 4 22H16.4262C17.907 22 19.1662 20.9197 19.3914 19.4562L20.4683 12.4562C20.7479 10.6384 19.3411 9 17.5032 9H14C13.4477 9 13 8.55228 13 8V4.46584C13 3.10399 11.896 2 10.5342 2C10.2093 2 9.91498 2.1913 9.78306 2.48838L7.26394 8.5M7 22H4C2.89543 22 2 21.1046 2 20V13C2 11.8954 2.89543 11 4 11H7M7 22V11" />
               </svg>
             </div>
             <div class="card-icon" aria-hidden="true">
@@ -439,7 +548,9 @@
               <span data-lang="zh">图像实验室</span>
             </div>
             <p class="card-description">
-              <span data-lang="en">Teacher creates classrooms, students join with classroom codes. Unified, cutting-edge image generation tool, no needs for student registration, teachers can manage classrooms and monitor progress.</span>
+              <span data-lang="en">Teacher creates classrooms, students join with classroom codes. Unified, cutting-edge
+                image generation tool, no needs for student registration, teachers can manage classrooms and monitor
+                progress.</span>
               <span data-lang="zh">教师创建课堂，学生用课堂码即可加入。统一的、最前沿的图像生成工具，学生无需注册，教师还可进行课堂管理，监控课堂进度。</span>
             </p>
           </a>
@@ -453,7 +564,9 @@
               <span data-lang="zh">视频实验室</span>
             </div>
             <p class="card-description">
-              <span data-lang="en">Teacher creates classrooms, students join with classroom codes. Unified, cutting-edge video generation tool, no needs for student registration, teachers can manage classrooms and monitor progress.</span>
+              <span data-lang="en">Teacher creates classrooms, students join with classroom codes. Unified, cutting-edge
+                video generation tool, no needs for student registration, teachers can manage classrooms and monitor
+                progress.</span>
               <span data-lang="zh">教师创建课堂，学生用课堂码即可加入。统一的、最前沿的视频生成工具，学生无需注册，教师还可进行课堂管理，监控课堂进度。</span>
             </p>
           </a>
@@ -467,7 +580,8 @@
               <span data-lang="zh">闪卡</span>
             </div>
             <p class="card-description">
-              <span data-lang="en">Digital flashcard system for efficient memorization and review. AI-powered card generation and review system.</span>
+              <span data-lang="en">Digital flashcard system for efficient memorization and review. AI-powered card
+                generation and review system.</span>
               <span data-lang="zh">数字闪卡系统，用于高效记忆和复习。AI驱动的卡片生成和复习系统。</span>
             </p>
           </a>
@@ -484,7 +598,8 @@
           <a class="card" href="https://translate.thisnexus.cn" aria-label="Open Translation app">
             <div class="card-badge" aria-label="Recommended" title="Recommended">
               <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path d="M7 22V11M2 13V20C2 21.1046 2.89543 22 4 22H16.4262C17.907 22 19.1662 20.9197 19.3914 19.4562L20.4683 12.4562C20.7479 10.6384 19.3411 9 17.5032 9H14C13.4477 9 13 8.55228 13 8V4.46584C13 3.10399 11.896 2 10.5342 2C10.2093 2 9.91498 2.1913 9.78306 2.48838L7.26394 8.5M7 22H4C2.89543 22 2 21.1046 2 20V13C2 11.8954 2.89543 11 4 11H7M7 22V11"/>
+                <path
+                  d="M7 22V11M2 13V20C2 21.1046 2.89543 22 4 22H16.4262C17.907 22 19.1662 20.9197 19.3914 19.4562L20.4683 12.4562C20.7479 10.6384 19.3411 9 17.5032 9H14C13.4477 9 13 8.55228 13 8V4.46584C13 3.10399 11.896 2 10.5342 2C10.2093 2 9.91498 2.1913 9.78306 2.48838L7.26394 8.5M7 22H4C2.89543 22 2 21.1046 2 20V13C2 11.8954 2.89543 11 4 11H7M7 22V11" />
               </svg>
             </div>
             <div class="card-icon" aria-hidden="true">
@@ -495,7 +610,8 @@
               <span data-lang="zh">翻译</span>
             </div>
             <p class="card-description">
-              <span data-lang="en">Advanced translation tool for multilingual educational content. One-click translation of word, ppt, excel files, no need to translate one page at a time.</span>
+              <span data-lang="en">Advanced translation tool for multilingual educational content. One-click translation
+                of word, ppt, excel files, no need to translate one page at a time.</span>
               <span data-lang="zh">用于多语言教育内容的高级翻译工具。一键翻译word，ppt，excel文件，不用一页一页翻译。</span>
             </p>
           </a>
@@ -509,7 +625,8 @@
               <span data-lang="zh">LaTeX 标答</span>
             </div>
             <p class="card-description">
-              <span data-lang="en">AI-powered one-click LaTeX solution generator for mathematical problems, no need to manually format.</span>
+              <span data-lang="en">AI-powered one-click LaTeX solution generator for mathematical problems, no need to
+                manually format.</span>
               <span data-lang="zh">AI驱动，一键为数学问题生成LaTeX格式的解答，无需再额外排版。</span>
             </p>
           </a>
@@ -523,7 +640,8 @@
               <span data-lang="zh">数学题库</span>
             </div>
             <p class="card-description">
-              <span data-lang="en">Comprehensive database of AMC problems for differentiated teaching. Generate worksheet on a few clicks. </span>
+              <span data-lang="en">Comprehensive database of AMC problems for differentiated teaching. Generate
+                worksheet on a few clicks. </span>
               <span data-lang="zh">建设中的分层教学题库，内含AMC历年真题，点击几下即可生成试卷。</span>
             </p>
           </a>
@@ -533,7 +651,8 @@
 
     <footer>
       © <span id="y"></span> THIS Nexus
-      <a class="beian" href="https://beian.mps.gov.cn/#/query/webSearch?code=11010802046611" rel="noreferrer" target="_blank">
+      <a class="beian" href="https://beian.mps.gov.cn/#/query/webSearch?code=11010802046611" rel="noreferrer"
+        target="_blank">
         <img src="备案图标.png" alt="公安备案图标">
         <span>京公网安备11010802046611号</span>
       </a>
@@ -542,23 +661,23 @@
 
   <script>
     // Authentication check
-    (function() {
+    (function () {
       const authenticated = sessionStorage.getItem('authenticated');
       if (!authenticated || authenticated !== 'true') {
-        window.location.href = 'auth.html';
+        window.location.href = 'login.html';
         return;
       }
     })();
-    
+
     // Language toggle functionality
     const langToggle = document.getElementById('langToggle');
     const html = document.documentElement;
-    
+
     // Initialize language from localStorage or default to Chinese
     const savedLang = localStorage.getItem('preferredLang') || 'zh';
     html.lang = savedLang;
     updateLangToggle();
-    
+
     langToggle.addEventListener('click', () => {
       const currentLang = html.lang;
       const newLang = currentLang === 'en' ? 'zh' : 'en';
@@ -566,21 +685,22 @@
       localStorage.setItem('preferredLang', newLang);
       updateLangToggle();
     });
-    
+
     function updateLangToggle() {
       const spans = langToggle.querySelectorAll('span');
       spans.forEach(span => {
         if (span.textContent === 'English' || span.textContent === '中文') {
-          span.classList.toggle('active', 
+          span.classList.toggle('active',
             (html.lang === 'en' && span.textContent === 'English') ||
             (html.lang === 'zh' && span.textContent === '中文')
           );
         }
       });
     }
-    
+
     // Minimal progressive enhancement: current year
     document.getElementById('y').textContent = new Date().getFullYear();
   </script>
 </body>
+
 </html>

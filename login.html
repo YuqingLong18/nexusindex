@@ -1,84 +1,215 @@
 <!doctype html>
-<html lang="en">
+<html lang="zh">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Login • THIS Nexus</title>
+  <title>验证 • Verification</title>
   <style>
-    :root{
-      --bg:#f7f7fb;
-      --card:#ffffff;
-      --text:#111827;
-      --muted:#6b7280;
-      --ring:#7c3aed;
-      --accent:#8b5cf6;
-      --error:#ef4444;
-      --shadow:0 10px 20px rgba(17,24,39,.08);
+    :root {
+      --bg: #f7f7fb;
+      --card: #ffffff;
+      --text: #111827;
+      --muted: #6b7280;
+      --ring: #7c3aed;
+      --accent: #8b5cf6;
+      --error: #ef4444;
+      --shadow: 0 10px 20px rgba(17, 24, 39, .08);
     }
-    @media (prefers-color-scheme: dark){
-      :root{
-        --bg:#0b0b10;
-        --card:#111319;
-        --text:#f3f4f6;
-        --muted:#9ca3af;
-        --ring:#a78bfa;
-        --accent:#a78bfa;
-        --shadow:0 10px 20px rgba(0,0,0,.45);
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0b0b10;
+        --card: #111319;
+        --text: #f3f4f6;
+        --muted: #9ca3af;
+        --ring: #a78bfa;
+        --accent: #a78bfa;
+        --shadow: 0 10px 20px rgba(0, 0, 0, .45);
       }
     }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
-      background:var(--bg); color:var(--text); display:flex; align-items:center; justify-content:center;
-      padding:20px;
-    }
-    .login-card{
-      background:var(--card); padding:40px; border-radius:24px; box-shadow:var(--shadow);
-      width:100%; max-width:400px; text-align:center;
-    }
-    h1{margin:0 0 8px; font-size:24px; font-weight:700}
-    p{margin:0 0 32px; color:var(--muted); font-size:14px}
-    
-    .form-group{margin-bottom:20px; text-align:left}
-    label{display:block; margin-bottom:8px; font-size:14px; font-weight:500}
-    input{
-      width:100%; padding:12px; border-radius:12px; border:1px solid var(--muted);
-      background:var(--bg); color:var(--text); font-size:16px; outline:none;
-      transition:border-color .15s, box-shadow .15s;
-    }
-    input:focus{border-color:var(--accent); box-shadow:0 0 0 3px var(--ring)}
-    
-    button{
-      width:100%; padding:14px; border:none; border-radius:12px;
-      background:linear-gradient(135deg, var(--accent), #6d28d9); color:white;
-      font-size:16px; font-weight:600; cursor:pointer; transition:opacity .15s;
-    }
-    button:hover{opacity:0.9}
-    button:disabled{opacity:0.7; cursor:not-allowed}
 
-    .error{
-      color:var(--error); font-size:14px; margin-top:16px; min-height:20px; display:none;
+    * {
+      box-sizing: border-box
+    }
+
+    html,
+    body {
+      height: 100%
+    }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji", "PingFang SC", "Microsoft YaHei", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .login-card {
+      background: var(--card);
+      padding: 40px;
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+      position: relative;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: 24px;
+      font-weight: 700
+    }
+
+    p {
+      margin: 0 0 32px;
+      color: var(--muted);
+      font-size: 14px
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+      text-align: left
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 14px;
+      font-weight: 500
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px solid var(--muted);
+      background: var(--bg);
+      color: var(--text);
+      font-size: 16px;
+      outline: none;
+      transition: border-color .15s, box-shadow .15s;
+    }
+
+    input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--ring)
+    }
+
+    button.submit-btn {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--accent), #6d28d9);
+      color: white;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity .15s;
+    }
+
+    button.submit-btn:hover {
+      opacity: 0.9
+    }
+
+    button.submit-btn:disabled {
+      opacity: 0.7;
+      cursor: not-allowed
+    }
+
+    .error {
+      color: var(--error);
+      font-size: 14px;
+      margin-top: 16px;
+      min-height: 20px;
+      display: none;
+    }
+
+    .error.show {
+      display: block;
+    }
+
+    .lang-toggle {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 6px 10px;
+      background: var(--bg);
+      border-radius: 8px;
+      border: 1px solid rgba(107, 114, 128, .2);
+      cursor: pointer;
+      transition: all .2s ease;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .lang-toggle:hover {
+      border-color: var(--accent);
+    }
+
+    .lang-toggle span {
+      color: var(--muted);
+      transition: color .2s ease;
+    }
+
+    .lang-toggle span.active {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    [data-lang="zh"] {
+      display: none;
+    }
+
+    html[lang="zh"] [data-lang="zh"] {
+      display: block;
+    }
+
+    html[lang="zh"] [data-lang="en"] {
+      display: none;
     }
   </style>
 </head>
+
 <body>
   <div class="login-card">
-    <h1>Login to THIS Nexus</h1>
-    <p>Enter your credentials to access the dashboard</p>
-    
+    <button class="lang-toggle" id="langToggle" aria-label="Toggle language">
+      <span data-lang="en">EN</span>
+      <span>/</span>
+      <span class="active" data-lang="zh">中</span>
+    </button>
+
+    <h1>
+      <span data-lang="en">Verification</span>
+      <span data-lang="zh">访问验证</span>
+    </h1>
+    <p>
+      <span data-lang="en">Please enter the internal test code</span>
+      <span data-lang="zh">请输入内部测试码</span>
+    </p>
+
     <form id="loginForm">
       <div class="form-group">
-        <label for="username">Username</label>
-        <input type="text" id="username" name="username" required autocomplete="username" autofocus>
-      </div>
-      
-      <div class="form-group">
-        <label for="password">Password</label>
-        <input type="password" id="password" name="password" required autocomplete="current-password">
+        <label for="code">
+          <span data-lang="en">Test Code</span>
+          <span data-lang="zh">测试码</span>
+        </label>
+        <input type="text" id="code" name="code" required autocomplete="off" autofocus>
       </div>
 
-      <button type="submit" id="submitBtn">Sign In</button>
+      <button type="submit" class="submit-btn" id="submitBtn">
+        <span data-lang="en">Enter</span>
+        <span data-lang="zh">进入</span>
+      </button>
       <div id="errorMsg" class="error"></div>
     </form>
   </div>
@@ -88,43 +219,58 @@
     const errorMsg = document.getElementById('errorMsg');
     const submitBtn = document.getElementById('submitBtn');
 
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      errorMsg.style.display = 'none';
-      submitBtn.disabled = true;
-      submitBtn.textContent = 'Signing In...';
+    // Language toggle functionality
+    const langToggle = document.getElementById('langToggle');
+    const html = document.documentElement;
 
-      const username = form.username.value;
-      const password = form.password.value;
+    // Initialize language from localStorage or default to Chinese
+    // Default to 'zh' as per requirement
+    const savedLang = localStorage.getItem('preferredLang') || 'zh';
+    html.lang = savedLang;
+    updateLangToggle();
 
-      try {
-        const response = await fetch('http://localhost:3000/verify', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ username, password })
-        });
-
-        const data = await response.json();
-
-        if (data.success) {
-          // Redirect to index page
-          window.location.href = 'index.html';
-        } else {
-          showError(data.error || 'Invalid credentials');
-        }
-      } catch (err) {
-        console.error(err);
-        showError('Connection error. Is the server running?');
-      } finally {
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'Sign In';
-      }
+    langToggle.addEventListener('click', () => {
+      const currentLang = html.lang;
+      const newLang = currentLang === 'en' ? 'zh' : 'en';
+      html.lang = newLang;
+      localStorage.setItem('preferredLang', newLang);
+      updateLangToggle();
     });
 
-    function showError(msg) {
-      errorMsg.textContent = msg;
-      errorMsg.style.display = 'block';
+    function updateLangToggle() {
+      const spans = langToggle.querySelectorAll('span');
+      // Update UI for active language
+      const enSpan = spans[0];
+      const zhSpan = spans[2];
+
+      enSpan.classList.toggle('active', html.lang === 'en');
+      zhSpan.classList.toggle('active', html.lang === 'zh');
     }
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      errorMsg.classList.remove('show');
+      submitBtn.disabled = true;
+
+      const code = form.code.value.trim();
+      const internalCode = "aied2026";
+
+      if (code === internalCode) {
+        // Success
+        sessionStorage.setItem('authenticated', 'true');
+        sessionStorage.setItem('authType', 'internal');
+
+        window.location.href = 'index.html';
+      } else {
+        // Error
+        const msg = html.lang === 'zh' ? '测试码错误' : 'Invalid test code';
+        errorMsg.textContent = msg;
+        errorMsg.classList.add('show');
+        submitBtn.disabled = false;
+        // Shake animation could be added here
+      }
+    });
   </script>
 </body>
+
 </html>
