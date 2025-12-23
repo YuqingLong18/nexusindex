@@ -139,6 +139,69 @@
       margin-bottom: 48px;
     }
 
+    .updates {
+      background: linear-gradient(135deg, rgba(139, 92, 246, .12), rgba(255, 255, 255, .7));
+      border: 1px solid rgba(139, 92, 246, .25);
+      border-radius: 18px;
+      padding: 20px 24px;
+      box-shadow: 0 12px 24px rgba(17, 24, 39, .08);
+      margin-bottom: 36px;
+      display: grid;
+      gap: 12px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .updates {
+        background: linear-gradient(135deg, rgba(139, 92, 246, .2), rgba(17, 19, 25, .85));
+        border-color: rgba(167, 139, 250, .35);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, .35);
+      }
+    }
+
+    .updates-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .updates-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin: 0;
+    }
+
+    .updates-tag {
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: #5b21b6;
+      background: rgba(139, 92, 246, .15);
+      padding: 6px 10px;
+      border-radius: 999px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .updates-tag {
+        color: #ddd6fe;
+        background: rgba(167, 139, 250, .2);
+      }
+    }
+
+    .updates-list {
+      margin: 0;
+      padding-left: 20px;
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: 14px;
+    }
+
+    .updates-list strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
     .section-header {
       font-size: 20px;
       font-weight: 600;
@@ -445,6 +508,39 @@
         <span class="active" data-lang="zh">中文</span>
       </button>
     </header>
+
+    <section class="updates" aria-live="polite">
+      <div class="updates-header">
+        <h2 class="updates-title">
+          <span data-lang="en">Recent Feature Updates</span>
+          <span data-lang="zh">近期功能更新</span>
+        </h2>
+        <span class="updates-tag">
+          <span data-lang="en">New</span>
+          <span data-lang="zh">更新</span>
+        </span>
+      </div>
+      <ul class="updates-list">
+        <li>
+          <strong data-lang="en">Placeholder:</strong>
+          <strong data-lang="zh">占位：</strong>
+          <span data-lang="en">Try the new lucky draw featuring Christmas tree!</span>
+          <span data-lang="zh">试试有趣的圣诞树抽奖小程序，活跃课堂气氛！</span>
+        </li>
+        <li>
+          <strong data-lang="en">Placeholder:</strong>
+          <strong data-lang="zh">占位：</strong>
+          <span data-lang="en">Particle effect new features: right hand control, left hand pinches to save screenshot.</span>
+          <span data-lang="zh">3D粒子特效现可通过左手大拇指和食指捏合来截图定格。</span>
+        </li>
+        <li>
+          <strong data-lang="en">Placeholder:</strong>
+          <strong data-lang="zh">占位：</strong>
+          <span data-lang="en">Check out the AI daily news in education, AI4S, industry and more.</span>
+          <span data-lang="zh">阅读每日AI新闻，获取在教育、科技、产业界的进展。</span>
+        </li>
+      </ul>
+    </section>
 
     <main id="apps" aria-label="App links">
       <!-- Explore for Free Section -->
