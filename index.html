@@ -150,6 +150,10 @@
       gap: 12px;
     }
 
+    .updates.is-hidden {
+      display: none;
+    }
+
     @media (prefers-color-scheme: dark) {
       .updates {
         background: linear-gradient(135deg, rgba(139, 92, 246, .2), rgba(17, 19, 25, .85));
@@ -163,6 +167,12 @@
       align-items: center;
       justify-content: space-between;
       gap: 12px;
+    }
+
+    .updates-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
 
     .updates-title {
@@ -182,10 +192,40 @@
       border-radius: 999px;
     }
 
+    .updates-close {
+      border: 0;
+      background: rgba(17, 24, 39, .06);
+      color: var(--text);
+      width: 32px;
+      height: 32px;
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      transition: all .2s ease;
+    }
+
+    .updates-close:hover {
+      background: rgba(139, 92, 246, .2);
+      color: #5b21b6;
+    }
+
     @media (prefers-color-scheme: dark) {
       .updates-tag {
         color: #ddd6fe;
         background: rgba(167, 139, 250, .2);
+      }
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .updates-close {
+        background: rgba(255, 255, 255, .08);
+        color: #e5e7eb;
+      }
+
+      .updates-close:hover {
+        background: rgba(167, 139, 250, .25);
+        color: #ddd6fe;
       }
     }
 
@@ -509,16 +549,21 @@
       </button>
     </header>
 
-    <section class="updates" aria-live="polite">
+    <section class="updates" id="updates" aria-live="polite">
       <div class="updates-header">
         <h2 class="updates-title">
           <span data-lang="en">Recent Feature Updates</span>
           <span data-lang="zh">近期功能更新</span>
         </h2>
-        <span class="updates-tag">
-          <span data-lang="en">New</span>
-          <span data-lang="zh">更新</span>
-        </span>
+        <div class="updates-controls">
+          <span class="updates-tag">
+            <span data-lang="en">New</span>
+            <span data-lang="zh">更新</span>
+          </span>
+          <button class="updates-close" id="updatesClose" type="button" aria-label="Close updates">
+            ×
+          </button>
+        </div>
       </div>
       <ul class="updates-list">
         <li>
@@ -810,6 +855,20 @@
 
     // Minimal progressive enhancement: current year
     document.getElementById('y').textContent = new Date().getFullYear();
+
+    // Dismiss updates box and remember preference
+    const updates = document.getElementById('updates');
+    const updatesClose = document.getElementById('updatesClose');
+    const updatesKey = 'hideUpdatesBox';
+
+    if (localStorage.getItem(updatesKey) === 'true') {
+      updates.classList.add('is-hidden');
+    }
+
+    updatesClose.addEventListener('click', () => {
+      updates.classList.add('is-hidden');
+      localStorage.setItem(updatesKey, 'true');
+    });
   </script>
 </body>
 
