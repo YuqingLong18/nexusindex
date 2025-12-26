@@ -394,8 +394,8 @@
     }
 
     .card-icon {
-      width: 80px;
-      height: 80px;
+      width: 96px;
+      height: 96px;
       border-radius: 12px;
       display: grid;
       place-items: center;
@@ -440,7 +440,7 @@
       width: 100%;
       height: 100%;
       object-fit: contain;
-      padding: 8px;
+      padding: 6px;
       transition: transform .4s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
@@ -449,7 +449,7 @@
     }
 
     .card-title {
-      font-size: 16px;
+      font-size: 14px;
       font-weight: 600;
       margin-bottom: 8px;
       color: var(--text);
@@ -462,7 +462,7 @@
     }
 
     .card-description {
-      font-size: 14px;
+      font-size: 12px;
       color: var(--muted);
       line-height: 1.5;
       margin: 0;
@@ -673,6 +673,27 @@
           <span data-lang="zh">课堂工具</span>
         </h2>
         <div class="grid">
+          <a class="card" href="https://mldemo.thisnexus.cn" aria-label="Open Hands-on Machine Learning app">
+            <div class="card-badge" aria-label="Recommended" title="Recommended">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M7 22V11M2 13V20C2 21.1046 2.89543 22 4 22H16.4262C17.907 22 19.1662 20.9197 19.3914 19.4562L20.4683 12.4562C20.7479 10.6384 19.3411 9 17.5032 9H14C13.4477 9 13 8.55228 13 8V4.46584C13 3.10399 11.896 2 10.5342 2C10.2093 2 9.91498 2.1913 9.78306 2.48838L7.26394 8.5M7 22H4C2.89543 22 2 21.1046 2 20V13C2 11.8954 2.89543 11 4 11H7M7 22V11" />
+              </svg>
+            </div>
+            <div class="card-icon" aria-hidden="true">
+              <img src="asset/mldemo.png" alt="">
+            </div>
+            <div class="card-title">
+              <span data-lang="en">Hands-on Machine Learning</span>
+              <span data-lang="zh">动手机器学习</span>
+            </div>
+            <p class="card-description">
+              <span data-lang="en">Create a classroom in ML Demo, let students collect, train and predict with ML
+                models!</span>
+              <span data-lang="zh">在机器学习demo中创建教室，让学生用摄像头感受收集数据、训练、预测的机器学习流程！</span>
+            </p>
+          </a>
+
           <a class="card" href="https://chinese.thisnexus.cn" aria-label="Open Chinese app">
             <div class="card-icon" aria-hidden="true">
               <img src="asset/chinese_logo.png" alt="">
