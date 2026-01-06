@@ -549,7 +549,7 @@
       </button>
     </header>
 
-    <section class="updates" id="updates" aria-live="polite">
+    <section class="updates" id="updates" aria-live="polite" data-updates-version="2024-10-01">
       <div class="updates-header">
         <h2 class="updates-title">
           <span data-lang="en">Recent Feature Updates</span>
@@ -907,15 +907,27 @@
     const updates = document.getElementById('updates');
     const updatesClose = document.getElementById('updatesClose');
     const updatesKey = 'hideUpdatesBox';
+    const updatesVersionKey = 'hideUpdatesBoxVersion';
 
-    if (localStorage.getItem(updatesKey) === 'true') {
-      updates.classList.add('is-hidden');
+    if (updates) {
+      const updatesVersion = updates.dataset.updatesVersion || 'v1';
+      const isHidden = localStorage.getItem(updatesKey) === 'true';
+      const hiddenVersion = localStorage.getItem(updatesVersionKey);
+
+      if (isHidden && hiddenVersion === updatesVersion) {
+        updates.classList.add('is-hidden');
+      } else if (isHidden) {
+        localStorage.removeItem(updatesKey);
+      }
+
+      if (updatesClose) {
+        updatesClose.addEventListener('click', () => {
+          updates.classList.add('is-hidden');
+          localStorage.setItem(updatesKey, 'true');
+          localStorage.setItem(updatesVersionKey, updatesVersion);
+        });
+      }
     }
-
-    updatesClose.addEventListener('click', () => {
-      updates.classList.add('is-hidden');
-      localStorage.setItem(updatesKey, 'true');
-    });
   </script>
 </body>
 
