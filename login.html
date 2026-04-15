@@ -4,166 +4,330 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>验证 • Verification</title>
+  <title>登录入口 • Sign In</title>
   <style>
     :root {
-      --bg: #f7f7fb;
-      --card: #ffffff;
+      --bg: #f3f4f6;
+      --card: rgba(255, 255, 255, 0.86);
       --text: #111827;
       --muted: #6b7280;
-      --ring: #7c3aed;
-      --accent: #8b5cf6;
-      --error: #ef4444;
-      --shadow: 0 10px 20px rgba(17, 24, 39, .08);
+      --line: rgba(17, 24, 39, 0.08);
+      --accent: #0f766e;
+      --accent-strong: #115e59;
+      --accent-soft: rgba(15, 118, 110, 0.1);
+      --surface: rgba(255, 255, 255, 0.75);
+      --error: #dc2626;
+      --shadow: 0 24px 80px rgba(15, 23, 42, 0.12);
     }
 
     @media (prefers-color-scheme: dark) {
       :root {
-        --bg: #0b0b10;
-        --card: #111319;
-        --text: #f3f4f6;
-        --muted: #9ca3af;
-        --ring: #a78bfa;
-        --accent: #a78bfa;
-        --shadow: 0 10px 20px rgba(0, 0, 0, .45);
+        --bg: #07111b;
+        --card: rgba(10, 19, 30, 0.82);
+        --text: #e5eef7;
+        --muted: #94a3b8;
+        --line: rgba(148, 163, 184, 0.16);
+        --accent: #2dd4bf;
+        --accent-strong: #14b8a6;
+        --accent-soft: rgba(45, 212, 191, 0.12);
+        --surface: rgba(15, 23, 42, 0.72);
+        --error: #f87171;
+        --shadow: 0 24px 80px rgba(0, 0, 0, 0.42);
       }
     }
 
     * {
-      box-sizing: border-box
+      box-sizing: border-box;
     }
 
     html,
     body {
-      height: 100%
+      min-height: 100%;
     }
 
     body {
       margin: 0;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji", "PingFang SC", "Microsoft YaHei", sans-serif;
-      background: var(--bg);
+      background:
+        radial-gradient(circle at top left, rgba(45, 212, 191, 0.18), transparent 34%),
+        radial-gradient(circle at bottom right, rgba(14, 165, 233, 0.14), transparent 28%),
+        linear-gradient(180deg, var(--bg), color-mix(in srgb, var(--bg) 84%, #ffffff 16%));
       color: var(--text);
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 20px;
+      padding: 24px;
     }
 
-    .login-card {
-      background: var(--card);
-      padding: 40px;
-      border-radius: 24px;
+    .shell {
+      width: min(960px, 100%);
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 24px;
+      align-items: stretch;
+    }
+
+    .panel,
+    .card {
+      border: 1px solid var(--line);
       box-shadow: var(--shadow);
-      width: 100%;
-      max-width: 400px;
-      text-align: center;
+      border-radius: 28px;
+      backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
+    }
+
+    .panel {
+      background: linear-gradient(160deg, var(--accent-soft), transparent 50%), var(--card);
+      padding: 40px;
+      display: grid;
+      align-content: space-between;
+      gap: 24px;
+      min-height: 560px;
+    }
+
+    .card {
+      background: var(--card);
+      padding: 32px;
       position: relative;
     }
 
-    h1 {
-      margin: 0 0 8px;
-      font-size: 24px;
-      font-weight: 700
-    }
-
-    p {
-      margin: 0 0 32px;
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: var(--surface);
       color: var(--muted);
-      font-size: 14px
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
     }
 
-    .form-group {
-      margin-bottom: 20px;
-      text-align: left
+    .eyebrow::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--accent);
+      box-shadow: 0 0 0 6px rgba(45, 212, 191, 0.12);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(32px, 4vw, 52px);
+      line-height: 1.05;
+      letter-spacing: -0.04em;
+    }
+
+    .lead {
+      margin: 0;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.7;
+      max-width: 34rem;
+    }
+
+    .feature-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .feature {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 16px 18px;
+    }
+
+    .feature strong {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 15px;
+    }
+
+    .feature span {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .lang-toggle {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: var(--surface);
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .lang-toggle span.active {
+      color: var(--accent);
+    }
+
+    .title-row {
+      margin-top: 56px;
+      margin-bottom: 12px;
+    }
+
+    .title-row h2 {
+      margin: 0 0 8px;
+      font-size: 28px;
+    }
+
+    .title-row p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .auth-actions {
+      display: grid;
+      gap: 14px;
+      margin-top: 28px;
+    }
+
+    .primary-btn,
+    .secondary-btn,
+    .ghost-btn {
+      width: 100%;
+      border-radius: 16px;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease, background 0.16s ease;
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .primary-btn,
+    .secondary-btn {
+      padding: 16px 18px;
+    }
+
+    .ghost-btn {
+      padding: 14px 16px;
+      background: transparent;
+      border-color: var(--line);
+      color: var(--text);
+      margin-top: 16px;
+    }
+
+    .primary-btn {
+      background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+      color: #ffffff;
+      box-shadow: 0 18px 30px rgba(15, 118, 110, 0.18);
+    }
+
+    .secondary-btn {
+      background: var(--surface);
+      border-color: var(--line);
+      color: var(--text);
+    }
+
+    .primary-btn:hover,
+    .secondary-btn:hover,
+    .ghost-btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 24px 0 16px;
+      color: var(--muted);
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: var(--line);
+    }
+
+    .legacy-form {
+      display: none;
+      margin-top: 12px;
+    }
+
+    .legacy-form.active {
+      display: block;
+    }
+
+    .field {
+      margin-bottom: 16px;
     }
 
     label {
       display: block;
       margin-bottom: 8px;
       font-size: 14px;
-      font-weight: 500
+      font-weight: 600;
     }
 
     input {
       width: 100%;
-      padding: 12px;
-      border-radius: 12px;
-      border: 1px solid var(--muted);
-      background: var(--bg);
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.7);
       color: var(--text);
-      font-size: 16px;
+      padding: 14px 15px;
+      font-size: 15px;
       outline: none;
-      transition: border-color .15s, box-shadow .15s;
+      transition: border-color 0.16s ease, box-shadow 0.16s ease;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      input {
+        background: rgba(15, 23, 42, 0.52);
+      }
     }
 
     input:focus {
       border-color: var(--accent);
-      box-shadow: 0 0 0 3px var(--ring)
+      box-shadow: 0 0 0 4px rgba(45, 212, 191, 0.14);
     }
 
-    button.submit-btn {
-      width: 100%;
-      padding: 14px;
-      border: none;
-      border-radius: 12px;
-      background: linear-gradient(135deg, var(--accent), #6d28d9);
-      color: white;
-      font-size: 16px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: opacity .15s;
-    }
-
-    button.submit-btn:hover {
-      opacity: 0.9
-    }
-
-    button.submit-btn:disabled {
-      opacity: 0.7;
-      cursor: not-allowed
-    }
-
+    .status,
     .error {
-      color: var(--error);
+      min-height: 22px;
       font-size: 14px;
-      margin-top: 16px;
-      min-height: 20px;
+      margin-top: 12px;
       display: none;
     }
 
+    .status.show,
     .error.show {
       display: block;
     }
 
-    .lang-toggle {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      padding: 6px 10px;
-      background: var(--bg);
-      border-radius: 8px;
-      border: 1px solid rgba(107, 114, 128, .2);
-      cursor: pointer;
-      transition: all .2s ease;
-      font-size: 12px;
-      font-weight: 500;
-    }
-
-    .lang-toggle:hover {
-      border-color: var(--accent);
-    }
-
-    .lang-toggle span {
+    .status {
       color: var(--muted);
-      transition: color .2s ease;
     }
 
-    .lang-toggle span.active {
-      color: var(--accent);
-      font-weight: 600;
+    .error {
+      color: var(--error);
+    }
+
+    .footnote {
+      margin-top: 20px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
     }
 
     [data-lang="zh"] {
@@ -177,99 +341,337 @@
     html[lang="zh"] [data-lang="en"] {
       display: none;
     }
+
+    @media (max-width: 860px) {
+      .shell {
+        grid-template-columns: 1fr;
+      }
+
+      .panel {
+        min-height: auto;
+      }
+    }
   </style>
 </head>
 
 <body>
-  <div class="login-card">
-    <button class="lang-toggle" id="langToggle" aria-label="Toggle language">
-      <span data-lang="en">EN</span>
-      <span>/</span>
-      <span class="active" data-lang="zh">中</span>
-    </button>
-
-    <h1>
-      <span data-lang="en">Verification</span>
-      <span data-lang="zh">访问验证</span>
-    </h1>
-    <p>
-      <span data-lang="en">Please enter the internal test code</span>
-      <span data-lang="zh">请输入内部测试码</span>
-    </p>
-
-    <form id="loginForm">
-      <div class="form-group">
-        <label for="code">
-          <span data-lang="en">Test Code</span>
-          <span data-lang="zh">测试码</span>
-        </label>
-        <input type="text" id="code" name="code" required autocomplete="off" autofocus>
+  <div class="shell">
+    <section class="panel">
+      <div>
+        <div class="eyebrow">
+          <span data-lang="en">THIS Nexus Access</span>
+          <span data-lang="zh">THIS Nexus 统一入口</span>
+        </div>
+        <h1>
+          <span data-lang="en">One sign-in for the whole site.</span>
+          <span data-lang="zh">整个站点，一个统一登录入口。</span>
+        </h1>
+        <p class="lead">
+          <span data-lang="en">Use your existing internal account or Microsoft SSO. After sign-in, the same session can be reused by apps on other subdomains such as MathGen.</span>
+          <span data-lang="zh">可以继续使用原有账户，或切换到 Microsoft 单点登录。登录后，MathGen 等子域应用会自动复用同一会话。</span>
+        </p>
       </div>
 
-      <button type="submit" class="submit-btn" id="submitBtn">
-        <span data-lang="en">Enter</span>
-        <span data-lang="zh">进入</span>
+      <div class="feature-list">
+        <div class="feature">
+          <strong>
+            <span data-lang="en">Microsoft SSO</span>
+            <span data-lang="zh">Microsoft 单点登录</span>
+          </strong>
+          <span>
+            <span data-lang="en">Recommended for staff accounts and cross-app access.</span>
+            <span data-lang="zh">推荐教师和管理账号使用，可直接在多个应用之间复用登录状态。</span>
+          </span>
+        </div>
+        <div class="feature">
+          <strong>
+            <span data-lang="en">Legacy Sign-In</span>
+            <span data-lang="zh">原有账户登录</span>
+          </strong>
+          <span>
+            <span data-lang="en">Keeps the existing username and password flow available during migration.</span>
+            <span data-lang="zh">迁移阶段保留现有用户名密码入口，避免影响原有使用习惯。</span>
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <button class="lang-toggle" id="langToggle" aria-label="Toggle language">
+        <span data-lang="en">EN</span>
+        <span>/</span>
+        <span class="active" data-lang="zh">中</span>
       </button>
-      <div id="errorMsg" class="error"></div>
-    </form>
+
+      <div class="title-row">
+        <h2>
+          <span data-lang="en">Choose a sign-in method</span>
+          <span data-lang="zh">请选择登录方式</span>
+        </h2>
+        <p>
+          <span data-lang="en">Microsoft can reuse your session across apps. Legacy sign-in stays available for existing internal accounts.</span>
+          <span data-lang="zh">Microsoft 登录可在站点内多个应用间自动识别；原有账户入口继续保留。</span>
+        </p>
+      </div>
+
+      <div class="auth-actions">
+        <button class="primary-btn" id="microsoftBtn" type="button">
+          <span data-lang="en">Continue With Microsoft</span>
+          <span data-lang="zh">使用 Microsoft 登录</span>
+        </button>
+        <button class="secondary-btn" id="legacyToggleBtn" type="button">
+          <span data-lang="en">Sign In The Old Way</span>
+          <span data-lang="zh">使用原有账户登录</span>
+        </button>
+      </div>
+
+      <div class="status" id="statusMsg"></div>
+      <div class="error" id="errorMsg"></div>
+
+      <div class="legacy-form" id="legacyForm">
+        <div class="divider">
+          <span data-lang="en">Legacy Account</span>
+          <span data-lang="zh">原有账户</span>
+        </div>
+
+        <form id="loginForm">
+          <div class="field">
+            <label for="username">
+              <span data-lang="en">Username</span>
+              <span data-lang="zh">用户名</span>
+            </label>
+            <input id="username" name="username" type="text" autocomplete="username" required>
+          </div>
+          <div class="field">
+            <label for="password">
+              <span data-lang="en">Password</span>
+              <span data-lang="zh">密码</span>
+            </label>
+            <input id="password" name="password" type="password" autocomplete="current-password" required>
+          </div>
+          <button class="primary-btn" id="submitBtn" type="submit">
+            <span data-lang="en">Sign In</span>
+            <span data-lang="zh">登录</span>
+          </button>
+        </form>
+
+        <button class="ghost-btn" id="legacyBackBtn" type="button">
+          <span data-lang="en">Hide Legacy Form</span>
+          <span data-lang="zh">收起原有账户表单</span>
+        </button>
+      </div>
+
+      <p class="footnote">
+        <span data-lang="en">After Microsoft sign-in, user profile data such as name and email are available to apps. Teacher-only apps can use that information to reject student accounts.</span>
+        <span data-lang="zh">Microsoft 登录后，应用可以读取姓名和邮箱等身份信息；教师专用应用可据此拒绝学生账号访问。</span>
+      </p>
+    </section>
   </div>
 
   <script>
-    const form = document.getElementById('loginForm');
-    const errorMsg = document.getElementById('errorMsg');
-    const submitBtn = document.getElementById('submitBtn');
-
-    // Language toggle functionality
-    const langToggle = document.getElementById('langToggle');
     const html = document.documentElement;
+    const langToggle = document.getElementById('langToggle');
+    const microsoftBtn = document.getElementById('microsoftBtn');
+    const legacyToggleBtn = document.getElementById('legacyToggleBtn');
+    const legacyBackBtn = document.getElementById('legacyBackBtn');
+    const legacyForm = document.getElementById('legacyForm');
+    const loginForm = document.getElementById('loginForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const errorMsg = document.getElementById('errorMsg');
+    const statusMsg = document.getElementById('statusMsg');
 
-    // Initialize language from localStorage or default to Chinese
-    // Default to 'zh' as per requirement
     const savedLang = localStorage.getItem('preferredLang') || 'zh';
     html.lang = savedLang;
     updateLangToggle();
 
-    langToggle.addEventListener('click', () => {
-      const currentLang = html.lang;
-      const newLang = currentLang === 'en' ? 'zh' : 'en';
-      html.lang = newLang;
-      localStorage.setItem('preferredLang', newLang);
-      updateLangToggle();
-    });
+    const query = new URLSearchParams(window.location.search);
+    const requestedReturnTo = query.get('returnTo');
+    const returnTo = normalizeReturnTo(requestedReturnTo);
+
+    const translations = {
+      en: {
+        checking: 'Checking your session...',
+        redirecting: 'Session found. Redirecting...',
+        signingIn: 'Signing in...',
+        errors: {
+          invalidCredentials: 'Invalid username or password.',
+          network: 'Unable to reach the authentication service.',
+          microsoft_config: 'Microsoft SSO is not configured on the server yet.',
+          microsoft_start_failed: 'Unable to start Microsoft sign-in.',
+          microsoft_denied: 'Microsoft sign-in was cancelled or denied.',
+          microsoft_token_failed: 'Microsoft sign-in could not be completed.',
+          microsoft_profile_failed: 'Unable to read your Microsoft profile.',
+          microsoft_sign_in_failed: 'Microsoft sign-in failed. Please try again.',
+          nonce_mismatch: 'Microsoft sign-in could not be verified.',
+          session_expired: 'Your sign-in session expired. Please try again.',
+          state_mismatch: 'Sign-in validation failed. Please try again.',
+        },
+      },
+      zh: {
+        checking: '正在检查登录状态...',
+        redirecting: '已检测到登录状态，正在跳转...',
+        signingIn: '正在登录...',
+        errors: {
+          invalidCredentials: '用户名或密码错误。',
+          network: '无法连接认证服务。',
+          microsoft_config: '服务器尚未完成 Microsoft 单点登录配置。',
+          microsoft_start_failed: '无法启动 Microsoft 登录。',
+          microsoft_denied: '您取消了 Microsoft 登录，或该请求被拒绝。',
+          microsoft_token_failed: 'Microsoft 登录未能完成。',
+          microsoft_profile_failed: '无法读取 Microsoft 用户信息。',
+          microsoft_sign_in_failed: 'Microsoft 登录失败，请重试。',
+          nonce_mismatch: 'Microsoft 登录校验失败，请重试。',
+          session_expired: '登录会话已过期，请重新尝试。',
+          state_mismatch: '登录状态校验失败，请重试。',
+        },
+      },
+    };
+
+    function t() {
+      return translations[html.lang] || translations.zh;
+    }
+
+    function normalizeReturnTo(value) {
+      if (!value) {
+        return new URL('index.html', window.location.origin).toString();
+      }
+
+      try {
+        const url = new URL(value, window.location.origin);
+        const hostname = url.hostname.toLowerCase();
+        if (
+          hostname === 'thisnexus.cn' ||
+          hostname.endsWith('.thisnexus.cn') ||
+          hostname === 'localhost' ||
+          hostname === '127.0.0.1'
+        ) {
+          return url.toString();
+        }
+      } catch (error) {
+      }
+
+      return new URL('index.html', window.location.origin).toString();
+    }
+
+    function showError(message) {
+      errorMsg.textContent = message;
+      errorMsg.classList.add('show');
+    }
+
+    function clearMessages() {
+      errorMsg.classList.remove('show');
+      errorMsg.textContent = '';
+      statusMsg.classList.remove('show');
+      statusMsg.textContent = '';
+    }
+
+    function showStatus(message) {
+      statusMsg.textContent = message;
+      statusMsg.classList.add('show');
+    }
 
     function updateLangToggle() {
       const spans = langToggle.querySelectorAll('span');
-      // Update UI for active language
       const enSpan = spans[0];
       const zhSpan = spans[2];
-
       enSpan.classList.toggle('active', html.lang === 'en');
       zhSpan.classList.toggle('active', html.lang === 'zh');
     }
 
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-      errorMsg.classList.remove('show');
-      submitBtn.disabled = true;
+    langToggle.addEventListener('click', () => {
+      const newLang = html.lang === 'en' ? 'zh' : 'en';
+      html.lang = newLang;
+      localStorage.setItem('preferredLang', newLang);
+      updateLangToggle();
+      clearMessages();
 
-      const code = form.code.value.trim();
-      const internalCode = "aied2026";
-
-      if (code === internalCode) {
-        // Success
-        sessionStorage.setItem('authenticated', 'true');
-        sessionStorage.setItem('authType', 'internal');
-
-        window.location.href = 'index.html';
-      } else {
-        // Error
-        const msg = html.lang === 'zh' ? '测试码错误' : 'Invalid test code';
-        errorMsg.textContent = msg;
-        errorMsg.classList.add('show');
-        submitBtn.disabled = false;
-        // Shake animation could be added here
+      const errorCode = query.get('error');
+      if (errorCode) {
+        showError(t().errors[errorCode] || errorCode);
       }
     });
+
+    legacyToggleBtn.addEventListener('click', () => {
+      clearMessages();
+      legacyForm.classList.add('active');
+      document.getElementById('username').focus();
+    });
+
+    legacyBackBtn.addEventListener('click', () => {
+      legacyForm.classList.remove('active');
+      loginForm.reset();
+      clearMessages();
+    });
+
+    microsoftBtn.addEventListener('click', () => {
+      clearMessages();
+      window.location.href = `/api/auth/microsoft?returnTo=${encodeURIComponent(returnTo)}`;
+    });
+
+    loginForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      clearMessages();
+      submitBtn.disabled = true;
+      showStatus(t().signingIn);
+
+      const username = loginForm.username.value.trim();
+      const password = loginForm.password.value.trim();
+
+      try {
+        const response = await fetch('/api/auth/login', {
+          method: 'POST',
+          credentials: 'include',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ username, password }),
+        });
+
+        const data = await response.json().catch(() => null);
+
+        if (response.ok && data?.success) {
+          window.location.href = returnTo;
+          return;
+        }
+
+        showError(data?.error || t().errors.invalidCredentials);
+      } catch (error) {
+        showError(t().errors.network);
+      } finally {
+        submitBtn.disabled = false;
+        statusMsg.classList.remove('show');
+      }
+    });
+
+    async function bootstrap() {
+      const errorCode = query.get('error');
+      if (errorCode) {
+        showError(t().errors[errorCode] || errorCode);
+      }
+
+      showStatus(t().checking);
+
+      try {
+        const response = await fetch('/api/auth/session', {
+          credentials: 'include',
+        });
+        const data = await response.json().catch(() => null);
+
+        if (response.ok && data?.authenticated) {
+          showStatus(t().redirecting);
+          window.location.href = returnTo;
+          return;
+        }
+      } catch (error) {
+        showError(t().errors.network);
+      } finally {
+        if (!statusMsg.textContent.includes(t().redirecting)) {
+          statusMsg.classList.remove('show');
+        }
+      }
+    }
+
+    bootstrap();
   </script>
 </body>
 

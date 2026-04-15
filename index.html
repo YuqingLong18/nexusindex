@@ -135,6 +135,54 @@
       font-weight: 600;
     }
 
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .user-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .user-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: var(--card);
+      border: 1px solid rgba(107, 114, 128, .2);
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .logout-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(107, 114, 128, .2);
+      background: var(--card);
+      color: var(--text);
+      cursor: pointer;
+      transition: all .2s ease;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .logout-btn:hover {
+      border-color: var(--accent);
+      box-shadow: 0 2px 8px rgba(139, 92, 246, .15);
+    }
+
     .section {
       margin-bottom: 48px;
     }
@@ -533,7 +581,7 @@
 
 <body>
   <a class="sr-only" href="#apps">Skip to app links</a>
-  <div class="wrap">
+  <div class="wrap" id="appShell" hidden>
     <header>
       <div class="brand">
         <div class="logo" aria-hidden="true">AIGE</div>
@@ -542,11 +590,20 @@
           <span data-lang="zh">清华大中小人工智能通识及教师课堂工具</span>
         </h1>
       </div>
-      <button class="lang-toggle" id="langToggle" aria-label="Toggle language">
-        <span data-lang="en">English</span>
-        <span>/</span>
-        <span class="active" data-lang="zh">中文</span>
-      </button>
+      <div class="header-actions">
+        <button class="lang-toggle" id="langToggle" aria-label="Toggle language">
+          <span data-lang="en">English</span>
+          <span>/</span>
+          <span class="active" data-lang="zh">中文</span>
+        </button>
+        <div class="user-controls">
+          <span class="user-chip" id="userChip" hidden></span>
+          <button class="logout-btn" id="logoutBtn" type="button">
+            <span data-lang="en">Log Out</span>
+            <span data-lang="zh">退出登录</span>
+          </button>
+        </div>
+      </div>
     </header>
 
     <section class="updates" id="updates" aria-live="polite" data-updates-version="2024-10-01">
@@ -876,14 +933,54 @@
   </div>
 
   <script>
-    // Authentication check
-    (function () {
-      const authenticated = sessionStorage.getItem('authenticated');
-      if (!authenticated || authenticated !== 'true') {
-        window.location.href = 'login.html';
+    const appShell = document.getElementById('appShell');
+    const userChip = document.getElementById('userChip');
+    const logoutBtn = document.getElementById('logoutBtn');
+
+    function buildReturnTo() {
+      return new URL(
+        `${window.location.pathname}${window.location.search}${window.location.hash}`,
+        window.location.origin
+      ).toString();
+    }
+
+    function redirectToLogin() {
+      window.location.href = `login.html?returnTo=${encodeURIComponent(buildReturnTo())}`;
+    }
+
+    function renderUser(user) {
+      if (!user) {
+        userChip.hidden = true;
+        userChip.textContent = '';
         return;
       }
-    })();
+
+      const pieces = [user.name || user.username || ''];
+      if (user.email) {
+        pieces.push(user.email);
+      }
+      userChip.textContent = pieces.filter(Boolean).join(' · ');
+      userChip.hidden = false;
+    }
+
+    async function requireSession() {
+      try {
+        const response = await fetch('/api/auth/session', {
+          credentials: 'include'
+        });
+        const data = await response.json().catch(() => null);
+
+        if (!response.ok || !data?.authenticated) {
+          redirectToLogin();
+          return;
+        }
+
+        renderUser(data.user);
+        appShell.hidden = false;
+      } catch (error) {
+        redirectToLogin();
+      }
+    }
 
     // Language toggle functionality
     const langToggle = document.getElementById('langToggle');
@@ -913,6 +1010,25 @@
         }
       });
     }
+
+    logoutBtn.addEventListener('click', async () => {
+      logoutBtn.disabled = true;
+
+      try {
+        await fetch('/api/auth/logout', {
+          method: 'POST',
+          credentials: 'include',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            returnTo: new URL('login.html', window.location.origin).toString()
+          })
+        });
+      } finally {
+        redirectToLogin();
+      }
+    });
+
+    requireSession();
 
     // Minimal progressive enhancement: current year
     document.getElementById('y').textContent = new Date().getFullYear();
