@@ -2,6 +2,10 @@
 
 A simple PostgreSQL-based credential database service for authentication. Other websites can call this API to verify user credentials.
 
+## Workspace SSO Rules
+
+The broader THIS Nexus workspace now uses shared Microsoft SSO conventions across `thisnexus.cn` and sibling subdomains. See [WORKSPACE_MS_SSO_RULES.md](/Users/ylong/Documents/nexusindex/WORKSPACE_MS_SSO_RULES.md:1) for the current policy and implementation checklist.
+
 ## Setup
 
 1. **Install dependencies:**
@@ -116,4 +120,3 @@ if (result.success) {
 - Never expose this API publicly without proper authentication/rate limiting
 - Consider adding HTTPS in production
 - Consider adding rate limiting to prevent brute force attacks
-

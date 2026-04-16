@@ -107,17 +107,18 @@
     }
 
     .lang-toggle {
-      display: flex;
+      display: inline-flex;
       align-items: center;
-      gap: 8px;
-      padding: 8px 12px;
+      gap: 10px;
+      padding: 10px 16px;
       background: var(--card);
-      border-radius: 8px;
+      border-radius: 999px;
       border: 1px solid rgba(107, 114, 128, .2);
       cursor: pointer;
       transition: all .2s ease;
-      font-size: 14px;
-      font-weight: 500;
+      font-size: 15px;
+      font-weight: 600;
+      white-space: nowrap;
     }
 
     .lang-toggle:hover {
@@ -125,14 +126,31 @@
       box-shadow: 0 2px 8px rgba(139, 92, 246, .15);
     }
 
-    .lang-toggle span {
+    .lang-toggle [data-lang] {
+      display: inline !important;
       color: var(--muted);
-      transition: color .2s ease;
+      font-weight: 600;
+      transition: color .2s ease, opacity .2s ease;
+    }
+
+    .lang-toggle .toggle-divider {
+      color: var(--muted);
+      opacity: .75;
+      font-weight: 500;
     }
 
     .lang-toggle span.active {
+      color: var(--text);
+      font-weight: 800;
+    }
+
+    .lang-toggle span.active[data-lang="zh"] {
       color: var(--accent);
-      font-weight: 600;
+    }
+
+    .lang-toggle:hover [data-lang]:not(.active) {
+      color: var(--text);
+      opacity: .78;
     }
 
     .header-actions {
@@ -593,7 +611,7 @@
       <div class="header-actions">
         <button class="lang-toggle" id="langToggle" aria-label="Toggle language">
           <span data-lang="en">English</span>
-          <span>/</span>
+          <span class="toggle-divider">/</span>
           <span class="active" data-lang="zh">中文</span>
         </button>
         <div class="user-controls">

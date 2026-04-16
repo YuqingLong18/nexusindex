@@ -159,18 +159,52 @@
       right: 24px;
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      padding: 8px 12px;
+      gap: 10px;
+      padding: 10px 16px;
       border-radius: 999px;
       border: 1px solid var(--line);
       background: var(--surface);
       color: var(--muted);
       cursor: pointer;
-      font-size: 13px;
+      font-size: 15px;
       font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .lang-toggle [data-lang] {
+      display: inline !important;
+      color: var(--muted);
+      font-weight: 600;
+      transition: color 0.16s ease, opacity 0.16s ease;
+    }
+
+    .lang-toggle .toggle-divider {
+      color: var(--muted);
+      opacity: 0.75;
+      font-weight: 500;
     }
 
     .lang-toggle span.active {
+      color: var(--text);
+      font-weight: 800;
+    }
+
+    .lang-toggle:hover {
+      border-color: color-mix(in srgb, var(--accent) 35%, var(--line));
+    }
+
+    .lang-toggle:hover [data-lang]:not(.active) {
+      color: var(--text);
+      opacity: 0.78;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .lang-toggle span.active {
+        color: #ffffff;
+      }
+    }
+
+    .lang-toggle span.active[data-lang="zh"] {
       color: var(--accent);
     }
 
@@ -398,9 +432,9 @@
 
     <section class="card">
       <button class="lang-toggle" id="langToggle" aria-label="Toggle language">
-        <span data-lang="en">EN</span>
-        <span>/</span>
-        <span class="active" data-lang="zh">中</span>
+        <span data-lang="en">English</span>
+        <span class="toggle-divider">/</span>
+        <span class="active" data-lang="zh">中文</span>
       </button>
 
       <div class="title-row">
